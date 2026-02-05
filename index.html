@@ -3,221 +3,2223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairos Landing Pages - Preview</title>
+    <title>Kairos — AI Executive Assistant | Reclaim 15+ Hours Every Week</title>
+    <meta name="description" content="Kairos is the AI executive assistant that handles your calendar, email, research, and operations with human-level judgment. Trusted by 100+ executives. $977/month.">
+    <meta property="og:title" content="Kairos — The AI Executive Assistant">
+    <meta property="og:description" content="Reclaim 15+ hours every week. AI-powered calendar, email, research, and operations for executives who value their time.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
+        /* ============================================
+           DESIGN SYSTEM
+           ============================================ */
+        :root {
+            --bg-primary: #08080C;
+            --bg-secondary: #0E0E14;
+            --bg-elevated: #14141C;
+            --bg-card: #111118;
+            --accent: #C9A96E;
+            --accent-light: #DFC08A;
+            --accent-dim: rgba(201, 169, 110, 0.12);
+            --accent-glow: rgba(201, 169, 110, 0.06);
+            --text-primary: #EAEAED;
+            --text-secondary: #9B9BA3;
+            --text-muted: #5D5D66;
+            --border: rgba(201, 169, 110, 0.10);
+            --border-hover: rgba(201, 169, 110, 0.25);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --container: 1200px;
+            --section-pad: clamp(80px, 10vw, 160px);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0A0A0A;
-            color: #F5F5F5;
-            padding: 60px 30px;
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        
+
+        /* Subtle grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        img { max-width: 100%; display: block; }
+        a { color: inherit; text-decoration: none; }
+        button { border: none; background: none; cursor: pointer; font: inherit; }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1.15;
+        }
+
         .container {
-            max-width: 1200px;
+            max-width: var(--container);
             margin: 0 auto;
+            padding: 0 clamp(24px, 4vw, 50px);
         }
-        
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            text-align: center;
+
+        /* ============================================
+           SCROLL REVEAL ANIMATIONS
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
-        .subtitle {
-            text-align: center;
-            color: #888;
-            margin-bottom: 60px;
-            font-size: 18px;
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* Horizontal line reveal */
+        .line-reveal {
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 0 auto;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 40px;
+
+        .line-reveal.visible {
+            width: 120px;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 24px 0;
+            transition: all 0.4s ease;
+        }
+
+        .nav.scrolled {
+            padding: 16px 0;
+            background: rgba(8, 8, 12, 0.92);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: var(--font-serif);
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 44px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--bg-primary);
+            background: var(--accent);
+            padding: 12px 28px;
             transition: all 0.3s;
         }
-        
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
+
+        .nav-cta:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
         }
-        
-        .card h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
+
+        /* Mobile menu */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            cursor: pointer;
+            z-index: 1001;
         }
-        
-        .card .label {
-            font-size: 12px;
+
+        .nav-toggle span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 4px);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -4px);
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            padding: clamp(140px, 18vw, 220px) 0 var(--section-pad);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ambient glow */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(ellipse, rgba(201, 169, 110, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-kicker {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-kicker::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 7vw, 88px);
+            font-style: italic;
+            line-height: 1.08;
+            margin-bottom: 32px;
+            letter-spacing: -1.5px;
+            max-width: 900px;
+            color: #F5F5F7;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(17px, 1.8vw, 21px);
+            color: var(--text-secondary);
+            max-width: 680px;
+            line-height: 1.75;
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+        }
+
+        .hero-metrics {
+            display: flex;
+            gap: clamp(40px, 6vw, 80px);
+            padding-top: 64px;
+            border-top: 1px solid var(--border);
+        }
+
+        .metric {
+            flex: 1;
+        }
+
+        .metric-value {
+            font-size: clamp(36px, 4.5vw, 56px);
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: -2px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 20px;
             font-weight: 600;
         }
-        
-        .card p {
-            color: #AAA;
-            line-height: 1.7;
-            margin-bottom: 25px;
-            font-size: 15px;
-        }
-        
-        .features {
-            list-style: none;
-            margin-bottom: 30px;
-            padding: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .features li {
-            padding: 8px 0;
-            color: #888;
-            font-size: 14px;
-        }
-        
-        .features li::before {
-            content: "→ ";
-            color: #FFF;
-        }
-        
-        .btn {
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn-primary {
             display: inline-block;
-            padding: 15px 35px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #FFF;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 20px 48px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(201, 169, 110, 0.2);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
             font-size: 14px;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            color: var(--accent);
+        }
+
+        .btn-secondary .arrow {
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .btn-secondary:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ============================================
+           SOCIAL PROOF BAR
+           ============================================ */
+        .proof-bar {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .proof-bar-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .proof-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(32px, 5vw, 64px);
+            flex-wrap: wrap;
+        }
+
+        .proof-logo {
+            font-size: clamp(14px, 1.5vw, 18px);
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .proof-logo:hover {
+            opacity: 0.8;
+        }
+
+        /* ============================================
+           SECTION SHARED STYLES
+           ============================================ */
+        .section-kicker {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-kicker::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .section-title {
+            font-size: clamp(36px, 5vw, 60px);
+            font-style: italic;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+            line-height: 1.15;
+        }
+
+        .section-subtitle {
+            font-size: clamp(16px, 1.5vw, 19px);
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        .section-header {
+            margin-bottom: 72px;
+        }
+
+        /* ============================================
+           PROBLEM SECTION
+           ============================================ */
+        .problem {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .pain-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: clamp(32px, 3.5vw, 48px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .pain-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+        }
+
+        .pain-card:hover::before {
+            opacity: 1;
+        }
+
+        .pain-number {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .pain-title {
+            font-family: var(--font-serif);
+            font-size: clamp(22px, 2vw, 28px);
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .pain-body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .cost-panel {
+            background: linear-gradient(135deg, rgba(201, 169, 110, 0.06) 0%, rgba(201, 169, 110, 0.02) 100%);
+            border: 1px solid var(--border-hover);
+            padding: clamp(48px, 5vw, 80px);
+            margin-top: 64px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cost-panel::before,
+        .cost-panel::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-color: var(--accent);
+            opacity: 0.2;
+        }
+
+        .cost-panel::before {
+            top: 20px;
+            left: 20px;
+            border-top: 1px solid;
+            border-left: 1px solid;
+        }
+
+        .cost-panel::after {
+            bottom: 20px;
+            right: 20px;
+            border-bottom: 1px solid;
+            border-right: 1px solid;
+        }
+
+        .cost-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .cost-figure {
+            font-size: clamp(56px, 7vw, 88px);
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -3px;
+            margin-bottom: 12px;
+        }
+
+        .cost-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           SOLUTION SECTION
+           ============================================ */
+        .solution {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+            position: relative;
+        }
+
+        .solution::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, var(--accent-glow) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .solution .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .solution-intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .solution-description {
+            font-size: clamp(16px, 1.4vw, 18px);
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: 40px;
+        }
+
+        .ai-team {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .ai-agent {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 28px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
             transition: all 0.3s;
         }
-        
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
+
+        .ai-agent:hover {
+            border-color: var(--border-hover);
+            background: rgba(201, 169, 110, 0.04);
         }
-        
-        .v1 .label { color: #DAA520; }
-        .v1:hover { border-color: #DAA520; }
-        
-        .v2 .label { color: #00F5FF; }
-        .v2:hover { border-color: #00F5FF; }
-        
-        .v3 .label { color: #8B7553; }
-        .v3:hover { border-color: #8B7553; }
-        
-        .download-all {
+
+        .ai-agent-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(201, 169, 110, 0.08);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .ai-agent-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .ai-agent-name {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 4px;
+        }
+
+        .ai-agent-role {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           HOW IT WORKS
+           ============================================ */
+        .how-it-works {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 36px;
+            left: calc(16.67% + 24px);
+            right: calc(16.67% + 24px);
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--border), var(--accent));
+        }
+
+        .step {
             text-align: center;
-            margin-top: 50px;
-            padding-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
-        
-        .download-all h3 {
-            margin-bottom: 20px;
-            font-size: 20px;
+
+        .step-number {
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            background: var(--bg-primary);
+            border: 1px solid var(--accent);
+            font-family: var(--font-serif);
+            font-size: 28px;
+            font-style: italic;
+            color: var(--accent);
+            position: relative;
+            z-index: 1;
         }
-        
-        .file-list {
-            display: inline-block;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 25px 40px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .step-title {
+            font-family: var(--font-serif);
+            font-size: clamp(20px, 2vw, 24px);
+            font-style: italic;
+            margin-bottom: 16px;
         }
-        
-        .file-list a {
-            display: block;
-            color: #00F5FF;
-            text-decoration: none;
-            padding: 8px 0;
-            font-family: 'Courier New', monospace;
+
+        .step-body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           FEATURES SECTION
+           ============================================ */
+        .features {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .feature-card {
+            padding: clamp(32px, 3vw, 44px);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(201, 169, 110, 0.06);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .feature-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .feature-name {
+            font-family: var(--font-serif);
+            font-size: clamp(18px, 1.6vw, 22px);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+
+        .feature-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Full-width feature (for the 5th one) */
+        .feature-card.full-width {
+            grid-column: 1 / -1;
+            max-width: 680px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        .testimonials {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .testimonial-card {
+            padding: clamp(32px, 3vw, 44px);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.4s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .testimonial-stars {
+            color: var(--accent);
             font-size: 14px;
+            letter-spacing: 4px;
+            margin-bottom: 24px;
         }
-        
-        .file-list a:hover {
-            color: #FFF;
+
+        .testimonial-quote {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+            flex: 1;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            background: rgba(201, 169, 110, 0.1);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-serif);
+            font-size: 16px;
+            font-style: italic;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .testimonial-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .testimonial-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           COMPARISON TABLE
+           ============================================ */
+        .comparison {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+        }
+
+        .comparison-table {
+            max-width: 960px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            background: rgba(201, 169, 110, 0.05);
+            border-bottom: 2px solid var(--border-hover);
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row:hover {
+            background: rgba(201, 169, 110, 0.02);
+        }
+
+        .table-cell {
+            padding: 22px 28px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .table-header .table-cell {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 18px 28px;
+        }
+
+        .table-cell.kairos-col {
+            background: rgba(201, 169, 110, 0.05);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .table-cell.dim {
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           PRICING SECTION
+           ============================================ */
+        .pricing {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .pricing::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to bottom, var(--accent-glow) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .pricing .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pricing-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: start;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-context h3 {
+            font-size: clamp(28px, 3vw, 40px);
+            font-style: italic;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .pricing-context p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        .pricing-anchors {
+            margin-top: 32px;
+        }
+
+        .anchor-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .anchor-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .anchor-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-left: auto;
+        }
+
+        .anchor-value.strike {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-hover);
+            padding: clamp(40px, 4vw, 64px);
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 8px 32px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .pricing-tier {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .pricing-amount {
+            font-size: clamp(64px, 8vw, 88px);
+            font-family: var(--font-sans);
+            font-weight: 700;
+            letter-spacing: -4px;
+            margin-bottom: 8px;
+        }
+
+        .pricing-term {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .pricing-setup {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .pricing-hourly {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 40px;
+            padding: 12px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+
+        .pricing-features li {
+            list-style: none;
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .pricing-check {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .guarantee-box {
+            background: rgba(201, 169, 110, 0.06);
+            border: 1px solid var(--border);
+            padding: 20px 24px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .guarantee-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .guarantee-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           FAQ SECTION
+           ============================================ */
+        .faq {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            padding: 28px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            gap: 24px;
+            transition: color 0.3s;
+        }
+
+        .faq-question:hover {
+            color: var(--accent);
+        }
+
+        .faq-question h3 {
+            font-size: clamp(18px, 1.6vw, 22px);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .faq-toggle {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .faq-toggle::before,
+        .faq-toggle::after {
+            content: '';
+            position: absolute;
+            background: var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .faq-toggle::before {
+            width: 14px;
+            height: 1px;
+        }
+
+        .faq-toggle::after {
+            width: 1px;
+            height: 14px;
+        }
+
+        .faq-item.active .faq-toggle::after {
+            transform: rotate(90deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer p {
+            padding-bottom: 28px;
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        /* ============================================
+           SECURITY BAR
+           ============================================ */
+        .security {
+            padding: 64px 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            text-align: center;
+        }
+
+        .security-item-icon {
+            margin-bottom: 16px;
+        }
+
+        .security-item-icon svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--accent);
+            fill: none;
+            stroke-width: 1.5;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .security-item-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .security-item-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           FINAL CTA
+           ============================================ */
+        .final-cta {
+            padding: clamp(100px, 14vw, 200px) 0;
+            text-align: center;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(201, 169, 110, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .final-cta .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta .section-kicker {
+            justify-content: center;
+        }
+
+        .final-cta .section-kicker::before {
+            display: none;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(36px, 5.5vw, 68px);
+            font-style: italic;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .final-cta-quote {
+            font-family: var(--font-serif);
+            font-size: clamp(18px, 2vw, 24px);
+            font-style: italic;
+            color: var(--accent);
+            max-width: 700px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
+        }
+
+        .final-cta-sub {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .solution-intro {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .pricing-layout {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+
+            .table-header .table-cell:nth-child(3),
+            .table-row .table-cell:nth-child(3) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--bg-elevated);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 32px;
+                transition: right 0.4s ease;
+                border-left: 1px solid var(--border);
+            }
+
+            .nav-links.open {
+                right: 0;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .pain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 56px;
+            }
+
+            .steps::before {
+                display: none;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card.full-width {
+                max-width: 100%;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-header,
+            .table-row {
+                grid-template-columns: 1.5fr 1fr;
+            }
+
+            .table-header .table-cell:nth-child(2),
+            .table-row .table-cell:nth-child(2) {
+                display: none;
+            }
+
+            .table-header .table-cell:nth-child(3),
+            .table-row .table-cell:nth-child(3) {
+                display: flex;
+            }
+
+            .hero-metrics {
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .proof-logos {
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .pricing-amount {
+                font-size: 56px;
+            }
+
+            .cost-figure {
+                font-size: 48px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Kairos Landing Pages</h1>
-        <p class="subtitle">Three world-class designs for high-ticket executive buyers</p>
-        
-        <div class="grid">
-            <div class="card v1">
-                <div class="label">Version 1</div>
-                <h2>Luxury Premium</h2>
-                <p>Old-money sophistication meets modern design. Gold accents on deep black with serif elegance.</p>
-                
-                <ul class="features">
-                    <li>Gold gradient (#DAA520)</li>
-                    <li>Playfair Display serif</li>
-                    <li>Traditional, timeless</li>
-                    <li>Best for: Finance, law, executives 45+</li>
-                </ul>
-                
-                <a href="kairos-landing-v1-luxury.html" class="btn" target="_blank">View Page</a>
+
+    <!-- ==========================================
+         NAVIGATION
+         ========================================== -->
+    <nav class="nav" id="nav">
+        <div class="container">
+            <a href="#" class="nav-logo">Kairos</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#solution">How It Works</a>
+                <a href="#features">Capabilities</a>
+                <a href="#pricing">Investment</a>
+                <a href="#faq">FAQ</a>
+                <a href="#pricing" class="nav-cta">Get Started</a>
             </div>
-            
-            <div class="card v2">
-                <div class="label">Version 2</div>
-                <h2>Modern Tech</h2>
-                <p>Silicon Valley energy with animated backgrounds. Cyan/blue neon on pure black.</p>
-                
-                <ul class="features">
-                    <li>Electric cyan (#00F5FF)</li>
-                    <li>Syne bold modern</li>
-                    <li>Fast, innovative</li>
-                    <li>Best for: Tech founders, SaaS CEOs 30-45</li>
-                </ul>
-                
-                <a href="kairos-landing-v2-modern.html" class="btn" target="_blank">View Page</a>
-            </div>
-            
-            <div class="card v3">
-                <div class="label">Version 3</div>
-                <h2>Executive Power</h2>
-                <p>Bloomberg Terminal aesthetic. Bronze/cognac with minimal, authoritative design.</p>
-                
-                <ul class="features">
-                    <li>Muted bronze (#8B7553)</li>
-                    <li>DM Serif italic</li>
-                    <li>Data-driven, precise</li>
-                    <li>Best for: C-suite, Fortune 500, consultants</li>
-                </ul>
-                
-                <a href="kairos-landing-v3-executive.html" class="btn" target="_blank">View Page</a>
+            <div class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" role="button" tabindex="0">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
-        
-        <div class="download-all">
-            <h3>Download Individual Files</h3>
-            <div class="file-list">
-                <a href="kairos-landing-v1-luxury.html" download>kairos-landing-v1-luxury.html</a>
-                <a href="kairos-landing-v2-modern.html" download>kairos-landing-v2-modern.html</a>
-                <a href="kairos-landing-v3-executive.html" download>kairos-landing-v3-executive.html</a>
-                <a href="kairos-landing-presentation.md" download>kairos-landing-presentation.md</a>
+    </nav>
+
+    <!-- ==========================================
+         HERO
+         ========================================== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-kicker reveal">AI Executive Intelligence</div>
+            <h1 class="reveal reveal-delay-1">You Didn't Build Your Empire to Drown in Admin</h1>
+            <p class="hero-subtitle reveal reveal-delay-2">Kairos is the AI executive assistant that handles your calendar, email, research, and operations&mdash;reclaiming 15+ hours every week so you can focus on what actually moves the needle.</p>
+
+            <div class="hero-actions reveal reveal-delay-3">
+                <a href="#pricing" class="btn-primary">Claim Your Edge</a>
+                <a href="#solution" class="btn-secondary">See How It Works <span class="arrow">&rarr;</span></a>
+            </div>
+
+            <div class="hero-metrics">
+                <div class="metric reveal">
+                    <span class="metric-value" data-target="15" data-suffix="+hrs">0</span>
+                    <span class="metric-label">Reclaimed Weekly</span>
+                </div>
+                <div class="metric reveal reveal-delay-1">
+                    <span class="metric-value" data-target="42" data-prefix="$" data-suffix="K+">0</span>
+                    <span class="metric-label">Annual Savings</span>
+                </div>
+                <div class="metric reveal reveal-delay-2">
+                    <span class="metric-value" data-target="100" data-suffix="+">0</span>
+                    <span class="metric-label">Executives Served</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SOCIAL PROOF BAR
+         ========================================== -->
+    <div class="proof-bar">
+        <div class="container">
+            <div class="proof-bar-label reveal">Trusted by executives at</div>
+            <div class="proof-logos reveal reveal-delay-1">
+                <span class="proof-logo">Sequoia</span>
+                <span class="proof-logo">McKinsey</span>
+                <span class="proof-logo">Goldman Sachs</span>
+                <span class="proof-logo">Andreessen Horowitz</span>
+                <span class="proof-logo">Deloitte</span>
+                <span class="proof-logo">Y Combinator</span>
             </div>
         </div>
     </div>
+
+    <!-- ==========================================
+         PROBLEM AGITATION
+         ========================================== -->
+    <section class="problem">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">The Cost of Doing It All</div>
+                <h2 class="section-title reveal reveal-delay-1">Your Brilliance Is Being Wasted on Busywork</h2>
+                <p class="section-subtitle reveal reveal-delay-2">At $100&ndash;500/hour, every minute spent on admin is revenue you'll never recover. Here's what that actually looks like.</p>
+            </div>
+
+            <div class="pain-grid">
+                <div class="pain-card reveal">
+                    <div class="pain-number">01</div>
+                    <h3 class="pain-title">The $500 Email</h3>
+                    <p class="pain-body">You're a $200/hour executive sorting through 200+ emails a day. Every hour in your inbox costs your business thousands in opportunities you never even saw.</p>
+                </div>
+
+                <div class="pain-card reveal reveal-delay-1">
+                    <div class="pain-number">02</div>
+                    <h3 class="pain-title">Calendar Whiplash</h3>
+                    <p class="pain-body">Back-to-back meetings with zero prep time. Double bookings. Timezone juggling. Your schedule runs you instead of the other way around.</p>
+                </div>
+
+                <div class="pain-card reveal reveal-delay-2">
+                    <div class="pain-number">03</div>
+                    <h3 class="pain-title">The Follow-Up Graveyard</h3>
+                    <p class="pain-body">That investor intro you forgot to reply to. The client proposal sitting in drafts. The competitive intel you never reviewed. Revenue, walking out the door.</p>
+                </div>
+            </div>
+
+            <div class="cost-panel reveal">
+                <div class="cost-label">Your Monthly Administrative Tax</div>
+                <div class="cost-figure">$6,000&ndash;10,000</div>
+                <div class="cost-desc">Lost every month to work that shouldn't require your involvement.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SOLUTION REVEAL
+         ========================================== -->
+    <section class="solution" id="solution">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">Meet Your New Chief of Staff</div>
+                <h2 class="section-title reveal reveal-delay-1">Executive Intelligence,<br>Not Just Automation</h2>
+            </div>
+
+            <div class="solution-intro">
+                <div>
+                    <p class="solution-description reveal">Unlike chatbots and basic schedulers, Kairos operates with human-level judgment. It learns your priorities, anticipates your needs, and executes with the precision of a seasoned executive assistant&mdash;without the $200K salary.</p>
+                    <p class="solution-description reveal reveal-delay-1">Three specialized AI agents work in concert, each mastering a domain of your professional life so nothing falls through the cracks.</p>
+                </div>
+
+                <div class="ai-team">
+                    <div class="ai-agent reveal">
+                        <div class="ai-agent-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        </div>
+                        <div>
+                            <div class="ai-agent-name">Kairos</div>
+                            <div class="ai-agent-role">The Orchestrator &mdash; Calendar, email, and daily operations</div>
+                        </div>
+                    </div>
+                    <div class="ai-agent reveal reveal-delay-1">
+                        <div class="ai-agent-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div>
+                            <div class="ai-agent-name">Atlas</div>
+                            <div class="ai-agent-role">The Operator &mdash; Task management, logistics, and execution</div>
+                        </div>
+                    </div>
+                    <div class="ai-agent reveal reveal-delay-2">
+                        <div class="ai-agent-icon">
+                            <svg viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+                        </div>
+                        <div>
+                            <div class="ai-agent-name">Midas</div>
+                            <div class="ai-agent-role">The Strategist &mdash; Research, intel, and strategic prep</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         HOW IT WORKS
+         ========================================== -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <div class="section-kicker reveal" style="justify-content: center;"><span style="display: none;"></span>Three Steps to Freedom</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align: center;">Live in 48 Hours. ROI in 48 More.</h2>
+            </div>
+
+            <div class="steps">
+                <div class="step reveal">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Onboard in 48 Hours</h3>
+                    <p class="step-body">We connect to your existing tools&mdash;Gmail, Calendar, Slack, CRM&mdash;and learn your workflows, preferences, and priorities through a white-glove setup.</p>
+                </div>
+                <div class="step reveal reveal-delay-1">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Kairos Takes the Wheel</h3>
+                    <p class="step-body">Email triage, calendar optimization, meeting prep, follow-ups, and research&mdash;handled automatically with judgment you can trust.</p>
+                </div>
+                <div class="step reveal reveal-delay-2">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">You Focus on What Matters</h3>
+                    <p class="step-body">15+ hours reclaimed every week. No more admin debt. Just the strategic work that actually grows your business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURES
+         ========================================== -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">Core Capabilities</div>
+                <h2 class="section-title reveal reveal-delay-1">Everything a World-Class EA Does. Nothing They Can't.</h2>
+                <p class="section-subtitle reveal reveal-delay-2">Each capability is powered by AI that learns your patterns, preferences, and priorities&mdash;getting sharper every week.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="feature-name">Calendar Intelligence</h3>
+                        <p class="feature-desc">Not just scheduling&mdash;prioritization. Kairos ranks meetings by revenue impact, relationship value, and strategic importance. It protects your deep work blocks and eliminates timezone chaos.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="feature-name">Email Command Center</h3>
+                        <p class="feature-desc">Surfaces the 5% that needs your eyes. Drafts responses for the rest. Flags urgent items, categorizes by context, and maintains your voice. Inbox zero becomes the default.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="feature-name">Research on Demand</h3>
+                        <p class="feature-desc">Competitive intelligence, due diligence, meeting prep, market analysis&mdash;synthesized into executive briefings and delivered before you need them. Powered by Midas.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="feature-name">Relationship Autopilot</h3>
+                        <p class="feature-desc">Automated follow-ups, check-ins, birthday notes, and touchpoints. Never drop a relationship that matters. Every connection stays warm without a single reminder on your list.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card full-width reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="feature-name">Task Orchestration</h3>
+                        <p class="feature-desc">Coordinates across your entire stack&mdash;Slack, CRM, docs, project management&mdash;so nothing falls through the cracks. Atlas ensures every commitment is tracked, every deadline is met, and every ball stays in the air.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         TESTIMONIALS
+         ========================================== -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <div class="section-kicker reveal" style="justify-content: center;"><span style="display: none;"></span>What Executives Say</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align: center;">The Results Speak for Themselves</h2>
+            </div>
+
+            <div class="testimonial-grid">
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-quote">"Kairos gave me back my Mondays. I used to spend the first half of every week digging out of email and scheduling chaos. Now I walk in focused and ready to lead."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SC</div>
+                        <div>
+                            <div class="testimonial-name">Sarah Chen</div>
+                            <div class="testimonial-role">CEO, Vertex Capital</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal reveal-delay-1">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-quote">"I used to spend 3 hours a day on email. Now I spend 15 minutes. The ROI was obvious within the first week&mdash;I don't know how I ran my business without it."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">JM</div>
+                        <div>
+                            <div class="testimonial-name">James Morrison</div>
+                            <div class="testimonial-role">Founder, Apex Group</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal reveal-delay-2">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-quote">"My previous EA cost me $7K/month and still missed things. Kairos costs a fraction of that and has never dropped the ball. The meeting prep alone is worth the investment."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MS</div>
+                        <div>
+                            <div class="testimonial-name">Dr. Maria Santos</div>
+                            <div class="testimonial-role">Managing Partner, Meridian Advisory</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         COMPARISON TABLE
+         ========================================== -->
+    <section class="comparison">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <div class="section-kicker reveal" style="justify-content: center;"><span style="display: none;"></span>Side by Side</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align: center;">The Math Is Simple</h2>
+            </div>
+
+            <div class="comparison-table reveal">
+                <div class="table-header">
+                    <div class="table-cell"></div>
+                    <div class="table-cell">Human EA</div>
+                    <div class="table-cell">Virtual Asst.</div>
+                    <div class="table-cell kairos-col">Kairos</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Monthly Cost</div>
+                    <div class="table-cell dim">$5,000&ndash;8,000</div>
+                    <div class="table-cell dim">$1,500&ndash;3,000</div>
+                    <div class="table-cell kairos-col">$977</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Benefits &amp; Overhead</div>
+                    <div class="table-cell dim">$1,500+/mo</div>
+                    <div class="table-cell dim">$0</div>
+                    <div class="table-cell kairos-col">$0</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Availability</div>
+                    <div class="table-cell dim">40 hrs/week</div>
+                    <div class="table-cell dim">20&ndash;40 hrs</div>
+                    <div class="table-cell kairos-col">24/7/365</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Response Time</div>
+                    <div class="table-cell dim">Hours</div>
+                    <div class="table-cell dim">Hours</div>
+                    <div class="table-cell kairos-col">Seconds</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Ramp-Up Time</div>
+                    <div class="table-cell dim">2&ndash;3 months</div>
+                    <div class="table-cell dim">2&ndash;4 weeks</div>
+                    <div class="table-cell kairos-col">48 hours</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Management Overhead</div>
+                    <div class="table-cell dim">5&ndash;10 hrs/mo</div>
+                    <div class="table-cell dim">3&ndash;5 hrs/mo</div>
+                    <div class="table-cell kairos-col">Zero</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Annual Net Savings</div>
+                    <div class="table-cell dim">&mdash;</div>
+                    <div class="table-cell dim">&mdash;</div>
+                    <div class="table-cell kairos-col">$42,000+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         PRICING
+         ========================================== -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <div class="section-kicker reveal" style="justify-content: center;"><span style="display: none;"></span>Your Time Has a Price. Protect It.</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align: center;">One Plan. No Complexity.</h2>
+            </div>
+
+            <div class="pricing-layout">
+                <div class="pricing-context reveal">
+                    <h3>An Investment That Pays for Itself in&nbsp;the First&nbsp;Week</h3>
+                    <p>If your time is worth $200/hour, Kairos pays for itself in less than 5 hours of saved time per month. Most executives reclaim 15+ hours in their first week alone.</p>
+                    <p>Compare that to a full-time executive assistant at $60&ndash;96K/year plus benefits, training, management overhead, and the risk of turnover.</p>
+
+                    <div class="pricing-anchors">
+                        <div class="anchor-item">
+                            <span class="anchor-label">Full-time EA (salary + benefits)</span>
+                            <span class="anchor-value strike">$7,000&ndash;10,000/mo</span>
+                        </div>
+                        <div class="anchor-item">
+                            <span class="anchor-label">Part-time virtual assistant</span>
+                            <span class="anchor-value strike">$1,500&ndash;3,000/mo</span>
+                        </div>
+                        <div class="anchor-item">
+                            <span class="anchor-label">Kairos Executive Tier</span>
+                            <span class="anchor-value" style="color: var(--accent);">$977/mo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pricing-card reveal reveal-delay-1">
+                    <div class="pricing-badge">Executive Tier</div>
+                    <div class="pricing-tier">Full-Service AI Assistant</div>
+                    <div class="pricing-amount">$977</div>
+                    <div class="pricing-term">per month</div>
+                    <div class="pricing-setup">+ $2,500 one-time integration &amp; configuration</div>
+                    <div class="pricing-hourly">That's less than $49/hr for 20+ hours of work reclaimed</div>
+
+                    <ul class="pricing-features">
+                        <li><span class="pricing-check"></span> Unlimited email management &amp; triage</li>
+                        <li><span class="pricing-check"></span> Calendar scheduling &amp; optimization</li>
+                        <li><span class="pricing-check"></span> Automated follow-ups &amp; nurturing</li>
+                        <li><span class="pricing-check"></span> Meeting preparation &amp; research</li>
+                        <li><span class="pricing-check"></span> Task orchestration across your stack</li>
+                        <li><span class="pricing-check"></span> Document creation &amp; review</li>
+                        <li><span class="pricing-check"></span> Competitive intel &amp; market research</li>
+                        <li><span class="pricing-check"></span> 24/7/365 availability</li>
+                        <li><span class="pricing-check"></span> Monthly strategy sessions</li>
+                        <li><span class="pricing-check"></span> Dedicated success manager</li>
+                    </ul>
+
+                    <div class="guarantee-box">
+                        <div class="guarantee-title">30-Day Performance Guarantee</div>
+                        <div class="guarantee-text">Full refund if Kairos doesn't meet your standards. No questions asked.</div>
+                    </div>
+
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center;">Claim Your Edge</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SECURITY BAR
+         ========================================== -->
+    <section class="security">
+        <div class="container">
+            <div class="security-grid">
+                <div class="reveal">
+                    <div class="security-item-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <div class="security-item-title">AES-256 Encryption</div>
+                    <div class="security-item-desc">End-to-end encryption at rest and in transit. Zero-knowledge architecture.</div>
+                </div>
+                <div class="reveal reveal-delay-1">
+                    <div class="security-item-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div class="security-item-title">SOC 2 Type II Compliant</div>
+                    <div class="security-item-desc">Independently audited security controls. Continuously monitored.</div>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <div class="security-item-icon">
+                        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="12" y1="2" x2="12" y2="2" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="security-item-title">Zero-Training Policy</div>
+                    <div class="security-item-desc">Your data is never used to train models. Private, isolated, and yours alone.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FAQ
+         ========================================== -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">Common Questions</div>
+                <h2 class="section-title reveal reveal-delay-1">Straight Answers</h2>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>How does Kairos actually work? Is it fully automated?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kairos combines three specialized AI agents&mdash;each handling a domain of your work. It connects to your existing tools (Gmail, Calendar, Slack, CRM, etc.) and handles tasks autonomously based on rules and patterns it learns from you. For sensitive decisions, it checks with you first. Think of it as a brilliant EA who knows when to act and when to ask.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal reveal-delay-1">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>What's the $2,500 setup fee for?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The setup fee covers dedicated onboarding: tool integration, security audit, workflow mapping, priority calibration, and a 1-on-1 session with our team to configure Kairos to your exact operating style. It's the difference between a generic tool and a true executive partner. Most clients see ROI within the first week of operation.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>Is my data secure? I deal with sensitive information.</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Security is foundational, not an afterthought. AES-256 encryption at rest and in transit, SOC 2 Type II compliance, zero-knowledge architecture, and a strict zero-training policy&mdash;your data is never used to improve our models. We meet the same standards as top-tier financial institutions.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal reveal-delay-1">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>What tools does Kairos integrate with?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Gmail, Google Calendar, Outlook, Slack, Salesforce, HubSpot, Notion, Asana, Monday.com, LinkedIn, and 100+ more via native integrations and API connections. If you use it daily, Kairos almost certainly supports it. Setup takes under 30 minutes per tool.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>Can I cancel anytime?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>No long-term contracts, ever. Cancel with 30 days notice. And if Kairos doesn't meet your expectations within the first 30 days, you'll receive a full refund of your monthly fee. We keep our clients because they want to stay, not because they're locked in.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal reveal-delay-1">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>How quickly can I get started?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most executives are fully operational within 48&ndash;72 hours. After onboarding, Kairos begins learning your patterns immediately and typically reaches peak performance within the first two weeks. You'll notice the difference in your first week.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FINAL CTA
+         ========================================== -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="section-kicker reveal">Limited Availability</div>
+            <h2 class="reveal reveal-delay-1">Stop Trading Hours for Tasks</h2>
+            <p class="final-cta-quote reveal reveal-delay-2">"The executives who win aren't working harder.<br>They have better systems."</p>
+            <p class="final-cta-sub reveal reveal-delay-3">Join 100+ leaders who've already made the shift.</p>
+            <a href="#pricing" class="btn-primary reveal reveal-delay-4">Claim Your Edge</a>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Kairos. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT
+         ========================================== -->
+    <script>
+    (function() {
+        'use strict';
+
+        // ========================================
+        // SCROLL REVEAL (Intersection Observer)
+        // ========================================
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -60px 0px'
+        });
+
+        revealElements.forEach(function(el) {
+            revealObserver.observe(el);
+        });
+
+        // ========================================
+        // ANIMATED COUNTERS
+        // ========================================
+        const counterElements = document.querySelectorAll('.metric-value[data-target]');
+        let countersAnimated = false;
+
+        const counterObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting && !countersAnimated) {
+                    countersAnimated = true;
+                    animateCounters();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        if (counterElements.length > 0) {
+            counterObserver.observe(counterElements[0].closest('.hero-metrics'));
+        }
+
+        function animateCounters() {
+            counterElements.forEach(function(el) {
+                var target = parseInt(el.getAttribute('data-target'));
+                var prefix = el.getAttribute('data-prefix') || '';
+                var suffix = el.getAttribute('data-suffix') || '';
+                var duration = 2000;
+                var start = 0;
+                var startTime = null;
+
+                function step(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    var progress = Math.min((timestamp - startTime) / duration, 1);
+                    // Ease out cubic
+                    var eased = 1 - Math.pow(1 - progress, 3);
+                    var current = Math.floor(eased * target);
+                    el.textContent = prefix + current + suffix;
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        el.textContent = prefix + target + suffix;
+                    }
+                }
+
+                requestAnimationFrame(step);
+            });
+        }
+
+        // ========================================
+        // NAVBAR SCROLL STATE
+        // ========================================
+        var nav = document.getElementById('nav');
+        var lastScroll = 0;
+
+        window.addEventListener('scroll', function() {
+            var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollY > 80) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+
+            lastScroll = scrollY;
+        }, { passive: true });
+
+        // ========================================
+        // MOBILE MENU TOGGLE
+        // ========================================
+        var navToggle = document.getElementById('navToggle');
+        var navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', function() {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ========================================
+        // FAQ ACCORDION
+        // ========================================
+        var faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(function(item) {
+            var question = item.querySelector('.faq-question');
+
+            question.addEventListener('click', function() {
+                var isActive = item.classList.contains('active');
+
+                // Close all
+                faqItems.forEach(function(other) {
+                    other.classList.remove('active');
+                    other.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
+
+                // Open clicked (if it wasn't already open)
+                if (!isActive) {
+                    item.classList.add('active');
+                    question.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            // Keyboard accessibility
+            question.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    question.click();
+                }
+            });
+        });
+
+        // ========================================
+        // SMOOTH SCROLL FOR ANCHOR LINKS
+        // ========================================
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                var href = this.getAttribute('href');
+                if (href === '#') return;
+
+                var target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    var navHeight = nav.offsetHeight;
+                    var targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+    })();
+    </script>
 </body>
 </html>
