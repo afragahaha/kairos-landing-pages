@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos – The Executive Assistant That Never Sleeps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0A0A0A;
+            color: #F5F5F5;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        /* Navigation */
+        nav {
+            padding: 30px 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.1);
+        }
+        
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        nav a {
+            color: #F5F5F5;
+            text-decoration: none;
+            margin-left: 40px;
+            font-weight: 400;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #DAA520;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 140px 0 160px;
+            background: 
+                radial-gradient(ellipse at top, rgba(218, 165, 32, 0.08) 0%, transparent 50%),
+                #0A0A0A;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(218,165,32,0.03)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 72px;
+            line-height: 1.1;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+        }
+        
+        .hero .subtitle {
+            font-size: 24px;
+            color: #B8B8B8;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 1px solid rgba(218, 165, 32, 0.2);
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #B8B8B8;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 500;
+        }
+        
+        /* Problem Section */
+        .problem {
+            padding: 120px 0;
+            background: #0F0F0F;
+        }
+        
+        .section-title {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 80px;
+            letter-spacing: -0.5px;
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .problem-card {
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid rgba(218, 165, 32, 0.15);
+            padding: 40px;
+            border-radius: 8px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(218, 165, 32, 0.4);
+        }
+        
+        .problem-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        
+        .problem-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .problem-desc {
+            color: #B8B8B8;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        
+        .cost-highlight {
+            background: rgba(218, 165, 32, 0.08);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            padding: 50px;
+            text-align: center;
+            margin-top: 60px;
+            border-radius: 8px;
+        }
+        
+        .cost-number {
+            font-size: 56px;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .cost-label {
+            font-size: 18px;
+            color: #B8B8B8;
+        }
+        
+        /* Solution */
+        .solution {
+            padding: 120px 0;
+            background: 
+                radial-gradient(ellipse at center, rgba(218, 165, 32, 0.05) 0%, transparent 70%),
+                #0A0A0A;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(26, 26, 26, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(218, 165, 32, 0.1);
+            transition: border-color 0.3s;
+        }
+        
+        .feature:hover {
+            border-color: rgba(218, 165, 32, 0.3);
+        }
+        
+        .checkmark {
+            color: #DAA520;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .feature-text {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 120px 0;
+            background: #0F0F0F;
+        }
+        
+        .pricing-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(218, 165, 32, 0.05) 0%, rgba(255, 215, 0, 0.02) 100%);
+            border: 2px solid #DAA520;
+            border-radius: 12px;
+            padding: 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: #DAA520;
+            color: #0A0A0A;
+            padding: 5px 50px;
+            transform: rotate(45deg);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .tier-name {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #DAA520;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .price {
+            font-size: 72px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .price-period {
+            font-size: 18px;
+            color: #B8B8B8;
+            margin-bottom: 15px;
+        }
+        
+        .setup-fee {
+            font-size: 14px;
+            color: #B8B8B8;
+            margin-bottom: 40px;
+        }
+        
+        .feature-list {
+            text-align: left;
+            margin-bottom: 40px;
+        }
+        
+        .feature-list li {
+            list-style: none;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 15px;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        /* CTA Buttons */
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
+            color: #0A0A0A;
+            padding: 20px 50px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(218, 165, 32, 0.3);
+        }
+        
+        .guarantee {
+            font-size: 13px;
+            color: #B8B8B8;
+            margin-top: 20px;
+        }
+        
+        /* Comparison */
+        .comparison {
+            padding: 120px 0;
+            background: #0A0A0A;
+        }
+        
+        .comparison-table {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(26, 26, 26, 0.6);
+            border: 1px solid rgba(218, 165, 32, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            border-bottom: 1px solid rgba(218, 165, 32, 0.1);
+        }
+        
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+        
+        .comparison-cell {
+            padding: 25px 30px;
+            font-size: 15px;
+        }
+        
+        .comparison-header {
+            background: rgba(218, 165, 32, 0.08);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+        }
+        
+        .highlight-cell {
+            background: rgba(218, 165, 32, 0.05);
+            font-weight: 600;
+            color: #DAA520;
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 120px 0;
+            background: #0F0F0F;
+        }
+        
+        .faq-list {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 30px;
+            background: rgba(26, 26, 26, 0.4);
+            border: 1px solid rgba(218, 165, 32, 0.1);
+            border-radius: 8px;
+            padding: 35px;
+        }
+        
+        .faq-question {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            color: #F5F5F5;
+        }
+        
+        .faq-answer {
+            color: #B8B8B8;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            padding: 140px 0;
+            background: 
+                radial-gradient(ellipse at center, rgba(218, 165, 32, 0.1) 0%, transparent 70%),
+                #0A0A0A;
+            text-align: center;
+        }
+        
+        .final-cta h2 {
+            font-size: 56px;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+        }
+        
+        .final-cta p {
+            font-size: 20px;
+            color: #B8B8B8;
+            margin-bottom: 50px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0;
+            background: #0F0F0F;
+            border-top: 1px solid rgba(218, 165, 32, 0.1);
+            text-align: center;
+        }
+        
+        footer p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 42px; }
+            .problem-grid { grid-template-columns: 1fr; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .stats { flex-direction: column; gap: 40px; }
+            .comparison-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">KAIROS</div>
+            <div>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>The Executive Assistant<br>That Never Sleeps</h1>
+            <p class="subtitle">Your AI partner works 24/7—handling the admin that drains your day—for 70% less than a human EA.</p>
+            <a href="#pricing" class="btn-primary">Begin Onboarding</a>
+            
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">15-20h</span>
+                    <span class="stat-label">Hours Saved Weekly</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">$42K+</span>
+                    <span class="stat-label">Annual Savings</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100+</span>
+                    <span class="stat-label">Executives Served</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem">
+        <div class="container">
+            <h2 class="section-title">Your Time Is Too Valuable for This</h2>
+            
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">📧</div>
+                    <h3 class="problem-title">Inbox Chaos</h3>
+                    <p class="problem-desc">200+ emails daily. Buried priorities. Missed opportunities. Hours spent sorting signal from noise.</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">📅</div>
+                    <h3 class="problem-title">Calendar Tetris</h3>
+                    <p class="problem-desc">Back-and-forth scheduling. Double bookings. Timezone confusion. Meeting prep scrambles.</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">⏱️</div>
+                    <h3 class="problem-title">Death by Admin</h3>
+                    <p class="problem-desc">Follow-ups. Research. Document drafts. Travel bookings. The work that never ends.</p>
+                </div>
+            </div>
+            
+            <div class="cost-highlight">
+                <div class="cost-number">$6,000-10,000</div>
+                <div class="cost-label">Lost revenue every month from admin work</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="solution" id="features">
+        <div class="container">
+            <h2 class="section-title">Meet Kairos</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 60px; color: #B8B8B8; font-size: 18px;">
+                The first AI executive assistant sophisticated enough to replace the real thing.
+            </p>
+            
+            <div class="feature-grid">
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Email management and intelligent prioritization</span>
+                </div>
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Calendar scheduling and optimization</span>
+                </div>
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Lead follow-up and nurturing</span>
+                </div>
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Meeting preparation and research</span>
+                </div>
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Task management and reminders</span>
+                </div>
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Travel booking and logistics</span>
+                </div>
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Document creation and editing</span>
+                </div>
+                <div class="feature">
+                    <span class="checkmark">✓</span>
+                    <span class="feature-text">Intelligence gathering and research</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison">
+        <div class="container">
+            <h2 class="section-title">The Math Is Simple</h2>
+            
+            <div class="comparison-table">
+                <div class="comparison-row comparison-header">
+                    <div class="comparison-cell"></div>
+                    <div class="comparison-cell">Traditional EA</div>
+                    <div class="comparison-cell">Kairos</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Monthly Cost</div>
+                    <div class="comparison-cell">$4,500</div>
+                    <div class="comparison-cell highlight-cell">$977</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Benefits & Overhead</div>
+                    <div class="comparison-cell">$1,500+</div>
+                    <div class="comparison-cell highlight-cell">$0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Availability</div>
+                    <div class="comparison-cell">40 hrs/week</div>
+                    <div class="comparison-cell highlight-cell">24/7/365</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Response Time</div>
+                    <div class="comparison-cell">Hours</div>
+                    <div class="comparison-cell highlight-cell">Seconds</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell">Annual Savings</div>
+                    <div class="comparison-cell">—</div>
+                    <div class="comparison-cell highlight-cell">$42,000+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            
+            <div class="pricing-card">
+                <div class="tier-name">Executive Tier</div>
+                <div class="price">$977</div>
+                <div class="price-period">/month</div>
+                <div class="setup-fee">+ $2,500 one-time setup</div>
+                
+                <ul class="feature-list">
+                    <li><span class="checkmark">✓</span> Unlimited email management</li>
+                    <li><span class="checkmark">✓</span> Calendar scheduling & optimization</li>
+                    <li><span class="checkmark">✓</span> Lead follow-up automation</li>
+                    <li><span class="checkmark">✓</span> Meeting prep & research</li>
+                    <li><span class="checkmark">✓</span> Task management</li>
+                    <li><span class="checkmark">✓</span> Document creation</li>
+                    <li><span class="checkmark">✓</span> Research & intelligence</li>
+                    <li><span class="checkmark">✓</span> 24/7 availability</li>
+                    <li><span class="checkmark">✓</span> Monthly strategy calls</li>
+                </ul>
+                
+                <a href="#" class="btn-primary">Start Onboarding</a>
+                <p class="guarantee">30-day satisfaction guarantee. Full refund if you're not happy.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2 class="section-title">Questions & Answers</h2>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h3 class="faq-question">How does Kairos integrate with my existing tools?</h3>
+                    <p class="faq-answer">Kairos connects seamlessly with Gmail, Google Calendar, Slack, and 100+ other tools you already use. Setup takes less than 30 minutes.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">Is my data secure?</h3>
+                    <p class="faq-answer">Absolutely. We use enterprise-grade encryption, SOC 2 compliance, and never share your data with third parties. Your information stays private.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">What if I need something custom?</h3>
+                    <p class="faq-answer">Every Kairos setup includes a dedicated onboarding call where we configure your assistant to your exact workflow and preferences.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">Can I cancel anytime?</h3>
+                    <p class="faq-answer">Yes. No long-term contracts. If you're not satisfied, you can cancel with 30 days notice.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3 class="faq-question">How quickly can Kairos get started?</h3>
+                    <p class="faq-answer">Most clients are fully onboarded and operational within 48-72 hours of signing up.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Reclaim Your Time?</h2>
+            <p>Join 100+ business owners who've already made the switch.</p>
+            <a href="#pricing" class="btn-primary">Begin Onboarding</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Kairos. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

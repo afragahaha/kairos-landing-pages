@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos – Executive Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #0D0D0D;
+            color: #E8E8E8;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'DM Serif Display', serif;
+            font-weight: 400;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 50px;
+        }
+        
+        /* Navigation */
+        nav {
+            padding: 35px 0;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(30px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(139, 117, 83, 0.15);
+        }
+        
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 26px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #8B7553;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 50px;
+        }
+        
+        nav a {
+            color: #A8A8A8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #8B7553;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 180px 0 140px;
+            background: 
+                linear-gradient(135deg, rgba(139, 117, 83, 0.03) 0%, transparent 50%),
+                #0D0D0D;
+            border-bottom: 1px solid rgba(139, 117, 83, 0.1);
+        }
+        
+        .hero .container {
+            max-width: 1100px;
+        }
+        
+        .hero-kicker {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8B7553;
+            margin-bottom: 35px;
+            font-weight: 600;
+        }
+        
+        .hero h1 {
+            font-size: 92px;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+            font-style: italic;
+            color: #F5F5F5;
+        }
+        
+        .hero-subtitle {
+            font-size: 22px;
+            color: #A8A8A8;
+            max-width: 750px;
+            margin-bottom: 60px;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        .hero-metrics {
+            display: flex;
+            gap: 70px;
+            padding-top: 70px;
+            border-top: 1px solid rgba(139, 117, 83, 0.2);
+        }
+        
+        .metric {
+            flex: 1;
+        }
+        
+        .metric-value {
+            font-size: 52px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            color: #8B7553;
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        
+        /* Problem */
+        .problem {
+            padding: 140px 0;
+            background: #0D0D0D;
+        }
+        
+        .section-header {
+            max-width: 900px;
+            margin-bottom: 80px;
+        }
+        
+        .section-kicker {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8B7553;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .section-title {
+            font-size: 62px;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+            font-style: italic;
+            line-height: 1.2;
+        }
+        
+        .section-intro {
+            font-size: 18px;
+            color: #A8A8A8;
+            line-height: 1.8;
+        }
+        
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+        }
+        
+        .pain-item {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(139, 117, 83, 0.15);
+            padding: 45px;
+            transition: border-color 0.3s;
+        }
+        
+        .pain-item:hover {
+            border-color: rgba(139, 117, 83, 0.4);
+        }
+        
+        .pain-number {
+            font-size: 11px;
+            color: #8B7553;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        
+        .pain-heading {
+            font-size: 26px;
+            margin-bottom: 18px;
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+        }
+        
+        .pain-body {
+            color: #888;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        .cost-panel {
+            background: rgba(139, 117, 83, 0.05);
+            border: 1px solid rgba(139, 117, 83, 0.25);
+            padding: 70px;
+            margin-top: 70px;
+            text-align: center;
+        }
+        
+        .cost-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8B7553;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .cost-figure {
+            font-size: 82px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            color: #E8E8E8;
+            margin-bottom: 15px;
+            letter-spacing: -2px;
+        }
+        
+        .cost-desc {
+            font-size: 16px;
+            color: #A8A8A8;
+        }
+        
+        /* Solution */
+        .solution {
+            padding: 140px 0;
+            background: 
+                linear-gradient(to bottom, rgba(139, 117, 83, 0.02) 0%, transparent 50%),
+                #0D0D0D;
+            border-top: 1px solid rgba(139, 117, 83, 0.1);
+        }
+        
+        .capabilities {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            background: rgba(139, 117, 83, 0.15);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .capability {
+            background: #0D0D0D;
+            padding: 40px 45px;
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+            transition: background 0.3s;
+        }
+        
+        .capability:hover {
+            background: rgba(139, 117, 83, 0.03);
+        }
+        
+        .capability-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #8B7553;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+        
+        .capability-text {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        
+        /* Comparison */
+        .comparison {
+            padding: 140px 0;
+            background: #0D0D0D;
+            border-top: 1px solid rgba(139, 117, 83, 0.1);
+        }
+        
+        .comparison-table {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(139, 117, 83, 0.15);
+        }
+        
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            background: rgba(139, 117, 83, 0.08);
+            border-bottom: 2px solid rgba(139, 117, 83, 0.2);
+        }
+        
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            border-bottom: 1px solid rgba(139, 117, 83, 0.1);
+        }
+        
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        
+        .table-cell {
+            padding: 28px 35px;
+            font-size: 14px;
+        }
+        
+        .table-header .table-cell {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: #8B7553;
+        }
+        
+        .highlight-value {
+            color: #8B7553;
+            font-weight: 600;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 140px 0;
+            background: 
+                linear-gradient(to bottom, rgba(139, 117, 83, 0.03) 0%, transparent 70%),
+                #0D0D0D;
+            border-top: 1px solid rgba(139, 117, 83, 0.1);
+        }
+        
+        .pricing-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(20, 20, 20, 0.6);
+            border: 2px solid rgba(139, 117, 83, 0.25);
+            padding: 80px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #8B7553;
+            color: #0D0D0D;
+            padding: 10px 35px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .pricing-tier {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8B7553;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .pricing-amount {
+            font-size: 96px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            color: #F5F5F5;
+            margin-bottom: 15px;
+            letter-spacing: -4px;
+        }
+        
+        .pricing-term {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+        
+        .pricing-setup {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 60px;
+        }
+        
+        .pricing-list {
+            text-align: left;
+            margin-bottom: 60px;
+            border-top: 1px solid rgba(139, 117, 83, 0.15);
+            border-bottom: 1px solid rgba(139, 117, 83, 0.15);
+            padding: 40px 0;
+        }
+        
+        .pricing-list li {
+            list-style: none;
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 15px;
+            color: #C8C8C8;
+        }
+        
+        .check-icon {
+            width: 6px;
+            height: 6px;
+            background: #8B7553;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        /* CTA Buttons */
+        .btn-primary {
+            display: inline-block;
+            background: #8B7553;
+            color: #0D0D0D;
+            padding: 20px 55px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: #A08A66;
+            transform: translateY(-2px);
+        }
+        
+        .guarantee {
+            font-size: 12px;
+            color: #777;
+            margin-top: 30px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 140px 0;
+            background: #0D0D0D;
+            border-top: 1px solid rgba(139, 117, 83, 0.1);
+        }
+        
+        .faq-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        
+        .faq-entry {
+            border-bottom: 1px solid rgba(139, 117, 83, 0.15);
+            padding: 45px 0;
+        }
+        
+        .faq-entry:first-child {
+            border-top: 1px solid rgba(139, 117, 83, 0.15);
+        }
+        
+        .faq-question {
+            font-size: 24px;
+            margin-bottom: 18px;
+            font-family: 'DM Serif Display', serif;
+            font-style: italic;
+            color: #E8E8E8;
+        }
+        
+        .faq-answer {
+            color: #A8A8A8;
+            line-height: 1.9;
+            font-size: 15px;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            padding: 180px 0;
+            background: 
+                linear-gradient(135deg, rgba(139, 117, 83, 0.05) 0%, transparent 70%),
+                #0D0D0D;
+            text-align: center;
+            border-top: 1px solid rgba(139, 117, 83, 0.1);
+        }
+        
+        .final-cta .section-kicker {
+            margin-bottom: 35px;
+        }
+        
+        .final-cta h2 {
+            font-size: 72px;
+            margin-bottom: 35px;
+            letter-spacing: -2px;
+            font-style: italic;
+        }
+        
+        .final-cta p {
+            font-size: 18px;
+            color: #A8A8A8;
+            margin-bottom: 60px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 70px 0;
+            background: rgba(13, 13, 13, 0.95);
+            border-top: 1px solid rgba(139, 117, 83, 0.15);
+            text-align: center;
+        }
+        
+        footer p {
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 52px; }
+            .pain-grid { grid-template-columns: 1fr; }
+            .capabilities { grid-template-columns: 1fr; }
+            .hero-metrics { flex-direction: column; gap: 35px; }
+            .table-header, .table-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">KAIROS</div>
+            <div class="nav-links">
+                <a href="#features">Capabilities</a>
+                <a href="#pricing">Investment</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-kicker">Executive Intelligence Platform</div>
+            <h1>The Perfect Timing<br>for Every Decision</h1>
+            <p class="hero-subtitle">Kairos handles your executive workload with the precision of a $200K EA—for 70% less. No management. No overhead. Just results.</p>
+            <a href="#pricing" class="btn-primary">Request Access</a>
+            
+            <div class="hero-metrics">
+                <div class="metric">
+                    <span class="metric-value">15-20h</span>
+                    <span class="metric-label">Reclaimed Weekly</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">$42K+</span>
+                    <span class="metric-label">Annual Savings</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-value">100+</span>
+                    <span class="metric-label">Executives</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">The Cost of Inattention</div>
+                <h2 class="section-title">Every Hour on Admin Is Revenue Lost</h2>
+                <p class="section-intro">At $100-500/hour, you're hemorrhaging $6,000-10,000 monthly on work that shouldn't require your involvement.</p>
+            </div>
+            
+            <div class="pain-grid">
+                <div class="pain-item">
+                    <div class="pain-number">01</div>
+                    <h3 class="pain-heading">Email Overload</h3>
+                    <p class="pain-body">200+ messages daily. Critical opportunities buried beneath noise. Hours lost to triage and response.</p>
+                </div>
+                
+                <div class="pain-item">
+                    <div class="pain-number">02</div>
+                    <h3 class="pain-heading">Calendar Fragmentation</h3>
+                    <p class="pain-body">Endless scheduling negotiations. Timezone chaos. Double bookings. Zero-value coordination work.</p>
+                </div>
+                
+                <div class="pain-item">
+                    <div class="pain-number">03</div>
+                    <h3 class="pain-heading">Administrative Debt</h3>
+                    <p class="pain-body">Follow-ups. Research. Document drafts. Travel logistics. The work that compounds daily.</p>
+                </div>
+            </div>
+            
+            <div class="cost-panel">
+                <div class="cost-label">Monthly Revenue Impact</div>
+                <div class="cost-figure">$6K-10K</div>
+                <div class="cost-desc">Lost to administrative overhead that AI handles better</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="solution" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">Intelligence Layer</div>
+                <h2 class="section-title">Kairos</h2>
+                <p class="section-intro">The first AI sophisticated enough to replace executive-level administrative support. Not an assistant—an operating system for your time.</p>
+            </div>
+            
+            <div class="capabilities">
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Email management and intelligent prioritization</div>
+                </div>
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Calendar scheduling and optimization</div>
+                </div>
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Lead follow-up and relationship nurturing</div>
+                </div>
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Meeting preparation and research synthesis</div>
+                </div>
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Task orchestration and deadline management</div>
+                </div>
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Travel booking and logistics coordination</div>
+                </div>
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Document creation and editorial review</div>
+                </div>
+                <div class="capability">
+                    <div class="capability-icon"></div>
+                    <div class="capability-text">Competitive intelligence and market research</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">Investment Analysis</div>
+                <h2 class="section-title">The Economics</h2>
+            </div>
+            
+            <div class="comparison-table">
+                <div class="table-header">
+                    <div class="table-cell"></div>
+                    <div class="table-cell">Traditional EA</div>
+                    <div class="table-cell">Kairos</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Monthly Investment</div>
+                    <div class="table-cell">$4,500</div>
+                    <div class="table-cell highlight-value">$977</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Benefits & Overhead</div>
+                    <div class="table-cell">$1,500+</div>
+                    <div class="table-cell highlight-value">$0</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Availability</div>
+                    <div class="table-cell">40 hrs/week</div>
+                    <div class="table-cell highlight-value">24/7/365</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Response Latency</div>
+                    <div class="table-cell">Hours</div>
+                    <div class="table-cell highlight-value">Seconds</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Management Overhead</div>
+                    <div class="table-cell">5-10 hrs/month</div>
+                    <div class="table-cell highlight-value">Zero</div>
+                </div>
+                <div class="table-row">
+                    <div class="table-cell">Annual Net Savings</div>
+                    <div class="table-cell">—</div>
+                    <div class="table-cell highlight-value">$42,000+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">Pricing Structure</div>
+                <h2 class="section-title">Executive Tier</h2>
+            </div>
+            
+            <div class="pricing-container">
+                <div class="pricing-badge">Premier Access</div>
+                <div class="pricing-tier">Executive Tier</div>
+                <div class="pricing-amount">$977</div>
+                <div class="pricing-term">/month</div>
+                <div class="pricing-setup">+ $2,500 implementation fee</div>
+                
+                <ul class="pricing-list">
+                    <li><span class="check-icon"></span> Unlimited email management</li>
+                    <li><span class="check-icon"></span> Calendar scheduling & optimization</li>
+                    <li><span class="check-icon"></span> Lead follow-up automation</li>
+                    <li><span class="check-icon"></span> Meeting preparation & research</li>
+                    <li><span class="check-icon"></span> Task management</li>
+                    <li><span class="check-icon"></span> Document creation</li>
+                    <li><span class="check-icon"></span> Intelligence gathering</li>
+                    <li><span class="check-icon"></span> 24/7/365 availability</li>
+                    <li><span class="check-icon"></span> Monthly strategy sessions</li>
+                </ul>
+                
+                <a href="#" class="btn-primary">Request Access</a>
+                <p class="guarantee">30-day performance guarantee. Full refund if standards aren't met.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">Common Inquiries</div>
+                <h2 class="section-title">Questions</h2>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-entry">
+                    <h3 class="faq-question">How does Kairos integrate with existing infrastructure?</h3>
+                    <p class="faq-answer">Seamlessly. Gmail, Google Calendar, Slack, and 100+ enterprise tools. Implementation takes under 30 minutes with white-glove support.</p>
+                </div>
+                
+                <div class="faq-entry">
+                    <h3 class="faq-question">What security standards does Kairos maintain?</h3>
+                    <p class="faq-answer">Enterprise-grade encryption, SOC 2 Type II compliance, and zero third-party data sharing. Your information remains confidential under the same standards as top-tier financial institutions.</p>
+                </div>
+                
+                <div class="faq-entry">
+                    <h3 class="faq-question">Can workflows be customized to specific requirements?</h3>
+                    <p class="faq-answer">Absolutely. Every implementation includes dedicated consultation to configure Kairos precisely to your operational framework and decision-making patterns.</p>
+                </div>
+                
+                <div class="faq-entry">
+                    <h3 class="faq-question">What are the cancellation terms?</h3>
+                    <p class="faq-answer">No long-term contracts. 30 days notice required for cancellation. If performance doesn't meet expectations within the first month, full refund guaranteed.</p>
+                </div>
+                
+                <div class="faq-entry">
+                    <h3 class="faq-question">How quickly can operations commence?</h3>
+                    <p class="faq-answer">Most executives are fully operational within 48-72 hours of commitment. Implementation includes dedicated support through the transition period.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <div class="container">
+            <div class="section-kicker">Limited Availability</div>
+            <h2>Reclaim Your Strategic Time</h2>
+            <p>Join 100+ executives who've already made the transition.</p>
+            <a href="#pricing" class="btn-primary">Request Access</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 KAIROS. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+</body>
+</html>

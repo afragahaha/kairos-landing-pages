@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos Landing Pages - Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0A0A0A;
+            color: #F5F5F5;
+            padding: 60px 30px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 60px;
+            font-size: 18px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 40px;
+            transition: all 0.3s;
+        }
+        
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .card h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .card .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .card p {
+            color: #AAA;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+        
+        .features {
+            list-style: none;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .features li {
+            padding: 8px 0;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .features li::before {
+            content: "→ ";
+            color: #FFF;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFF;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .v1 .label { color: #DAA520; }
+        .v1:hover { border-color: #DAA520; }
+        
+        .v2 .label { color: #00F5FF; }
+        .v2:hover { border-color: #00F5FF; }
+        
+        .v3 .label { color: #8B7553; }
+        .v3:hover { border-color: #8B7553; }
+        
+        .download-all {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .download-all h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        
+        .file-list {
+            display: inline-block;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 25px 40px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .file-list a {
+            display: block;
+            color: #00F5FF;
+            text-decoration: none;
+            padding: 8px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .file-list a:hover {
+            color: #FFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kairos Landing Pages</h1>
+        <p class="subtitle">Three world-class designs for high-ticket executive buyers</p>
+        
+        <div class="grid">
+            <div class="card v1">
+                <div class="label">Version 1</div>
+                <h2>Luxury Premium</h2>
+                <p>Old-money sophistication meets modern design. Gold accents on deep black with serif elegance.</p>
+                
+                <ul class="features">
+                    <li>Gold gradient (#DAA520)</li>
+                    <li>Playfair Display serif</li>
+                    <li>Traditional, timeless</li>
+                    <li>Best for: Finance, law, executives 45+</li>
+                </ul>
+                
+                <a href="kairos-landing-v1-luxury.html" class="btn" target="_blank">View Page</a>
+            </div>
+            
+            <div class="card v2">
+                <div class="label">Version 2</div>
+                <h2>Modern Tech</h2>
+                <p>Silicon Valley energy with animated backgrounds. Cyan/blue neon on pure black.</p>
+                
+                <ul class="features">
+                    <li>Electric cyan (#00F5FF)</li>
+                    <li>Syne bold modern</li>
+                    <li>Fast, innovative</li>
+                    <li>Best for: Tech founders, SaaS CEOs 30-45</li>
+                </ul>
+                
+                <a href="kairos-landing-v2-modern.html" class="btn" target="_blank">View Page</a>
+            </div>
+            
+            <div class="card v3">
+                <div class="label">Version 3</div>
+                <h2>Executive Power</h2>
+                <p>Bloomberg Terminal aesthetic. Bronze/cognac with minimal, authoritative design.</p>
+                
+                <ul class="features">
+                    <li>Muted bronze (#8B7553)</li>
+                    <li>DM Serif italic</li>
+                    <li>Data-driven, precise</li>
+                    <li>Best for: C-suite, Fortune 500, consultants</li>
+                </ul>
+                
+                <a href="kairos-landing-v3-executive.html" class="btn" target="_blank">View Page</a>
+            </div>
+        </div>
+        
+        <div class="download-all">
+            <h3>Download Individual Files</h3>
+            <div class="file-list">
+                <a href="kairos-landing-v1-luxury.html" download>kairos-landing-v1-luxury.html</a>
+                <a href="kairos-landing-v2-modern.html" download>kairos-landing-v2-modern.html</a>
+                <a href="kairos-landing-v3-executive.html" download>kairos-landing-v3-executive.html</a>
+                <a href="kairos-landing-presentation.md" download>kairos-landing-presentation.md</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

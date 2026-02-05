@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos – AI That Multiplies Your Time</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #FFFFFF;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        /* Navigation */
+        nav {
+            padding: 25px 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #00F5FF 0%, #0099FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            margin-left: 35px;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            color: #00F5FF;
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 200px 0 140px;
+            background: 
+                radial-gradient(ellipse at top left, rgba(0, 245, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(0, 153, 255, 0.15) 0%, transparent 50%),
+                #000000;
+            position: relative;
+            margin-top: 70px;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 82px;
+            line-height: 1;
+            margin-bottom: 35px;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #00F5FF 50%, #0099FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero .subtitle {
+            font-size: 22px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 650px;
+            margin-bottom: 50px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            background: linear-gradient(135deg, #00F5FF 0%, #0099FF 100%);
+            color: #000000;
+            padding: 18px 45px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            letter-spacing: 0.3px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(0, 245, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            display: inline-block;
+            color: #00F5FF;
+            padding: 18px 45px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid #00F5FF;
+            border-radius: 50px;
+            transition: all 0.3s;
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 245, 255, 0.1);
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            background: rgba(0, 245, 255, 0.03);
+            border: 1px solid rgba(0, 245, 255, 0.1);
+            border-radius: 16px;
+            padding: 50px;
+            margin-top: 100px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 56px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00F5FF 0%, #0099FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: -2px;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        
+        /* Problem Section */
+        .problem {
+            padding: 140px 0;
+            background: #000000;
+        }
+        
+        .section-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00F5FF;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .section-title {
+            font-size: 56px;
+            margin-bottom: 70px;
+            letter-spacing: -1.5px;
+        }
+        
+        .pain-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 70px;
+        }
+        
+        .pain-card {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.05) 0%, rgba(0, 153, 255, 0.02) 100%);
+            border: 1px solid rgba(0, 245, 255, 0.15);
+            padding: 40px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pain-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00F5FF 0%, #0099FF 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .pain-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .pain-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 245, 255, 0.4);
+        }
+        
+        .pain-emoji {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .pain-title {
+            font-size: 22px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .pain-desc {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        
+        .cost-callout {
+            background: rgba(0, 245, 255, 0.05);
+            border: 2px solid #00F5FF;
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+        }
+        
+        .cost-title {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00F5FF;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .cost-amount {
+            font-size: 72px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00F5FF 0%, #0099FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: -2px;
+        }
+        
+        .cost-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Solution */
+        .solution {
+            padding: 140px 0;
+            background: 
+                radial-gradient(ellipse at center, rgba(0, 245, 255, 0.08) 0%, transparent 70%),
+                #000000;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .feature-item {
+            background: rgba(0, 245, 255, 0.02);
+            border: 1px solid rgba(0, 245, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s;
+        }
+        
+        .feature-item:hover {
+            background: rgba(0, 245, 255, 0.05);
+            border-color: rgba(0, 245, 255, 0.3);
+            transform: translateX(10px);
+        }
+        
+        .feature-check {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00F5FF 0%, #0099FF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+        
+        .feature-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        /* Comparison */
+        .comparison {
+            padding: 140px 0;
+            background: #000000;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .comparison-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .comparison-card.highlight {
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(0, 153, 255, 0.05) 100%);
+            border: 2px solid #00F5FF;
+            transform: scale(1.05);
+        }
+        
+        .comparison-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .comparison-card.highlight .comparison-label {
+            color: #00F5FF;
+        }
+        
+        .comparison-price {
+            font-size: 48px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .comparison-card.highlight .comparison-price {
+            background: linear-gradient(135deg, #00F5FF 0%, #0099FF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .comparison-period {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+        }
+        
+        .comparison-features {
+            text-align: left;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 2;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 140px 0;
+            background: 
+                radial-gradient(ellipse at center, rgba(0, 245, 255, 0.08) 0%, transparent 70%),
+                #000000;
+        }
+        
+        .pricing-box {
+            max-width: 650px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.08) 0%, rgba(0, 153, 255, 0.04) 100%);
+            border: 2px solid #00F5FF;
+            border-radius: 24px;
+            padding: 70px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00F5FF 0%, #0099FF 100%);
+            color: #000000;
+            padding: 8px 30px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .tier {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #00F5FF;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .price-main {
+            font-size: 80px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -3px;
+        }
+        
+        .price-period {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 10px;
+        }
+        
+        .setup-note {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 50px;
+        }
+        
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 50px;
+        }
+        
+        .pricing-features li {
+            list-style: none;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(0, 245, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 15px;
+        }
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .guarantee-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 25px;
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 140px 0;
+            background: #000000;
+        }
+        
+        .faq-grid {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            gap: 25px;
+        }
+        
+        .faq-block {
+            background: rgba(0, 245, 255, 0.02);
+            border: 1px solid rgba(0, 245, 255, 0.1);
+            border-radius: 16px;
+            padding: 35px;
+        }
+        
+        .faq-q {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+        
+        .faq-a {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        
+        /* CTA Final */
+        .cta-final {
+            padding: 140px 0;
+            background: 
+                radial-gradient(ellipse at center, rgba(0, 245, 255, 0.15) 0%, transparent 70%),
+                #000000;
+            text-align: center;
+        }
+        
+        .cta-final h2 {
+            font-size: 64px;
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+        }
+        
+        .cta-final p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 50px 0;
+            background: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid rgba(0, 245, 255, 0.1);
+            text-align: center;
+        }
+        
+        footer p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 48px; }
+            .pain-points { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .stats-bar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">KAIROS</div>
+            <div>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>AI That Multiplies<br>Your Time</h1>
+            <p class="subtitle">The most sophisticated executive AI handles everything you hate—so you can focus on the work only you can do.</p>
+            
+            <div class="hero-cta">
+                <a href="#pricing" class="btn-primary">Get Started</a>
+                <a href="#features" class="btn-secondary">See How It Works</a>
+            </div>
+            
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-number">20h</span>
+                    <span class="stat-label">Freed Per Week</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">70%</span>
+                    <span class="stat-label">Cost Reduction</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Always Working</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem">
+        <div class="container">
+            <div class="section-label">THE PROBLEM</div>
+            <h2 class="section-title">You're Burning Money<br>On Admin Work</h2>
+            
+            <div class="pain-points">
+                <div class="pain-card">
+                    <span class="pain-emoji">📧</span>
+                    <h3 class="pain-title">Email Overload</h3>
+                    <p class="pain-desc">200+ messages daily. Important stuff buried. Hours lost sorting noise.</p>
+                </div>
+                
+                <div class="pain-card">
+                    <span class="pain-emoji">📅</span>
+                    <h3 class="pain-title">Calendar Chaos</h3>
+                    <p class="pain-desc">Endless back-and-forth. Double bookings. Timezone nightmares.</p>
+                </div>
+                
+                <div class="pain-card">
+                    <span class="pain-emoji">⏱️</span>
+                    <h3 class="pain-title">Admin Hell</h3>
+                    <p class="pain-desc">Follow-ups. Research. Booking. The work that never stops.</p>
+                </div>
+            </div>
+            
+            <div class="cost-callout">
+                <div class="cost-title">Monthly Lost Revenue</div>
+                <div class="cost-amount">$6K-10K</div>
+                <div class="cost-subtitle">Your time value × hours wasted on admin</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="solution" id="features">
+        <div class="container">
+            <div class="section-label">THE SOLUTION</div>
+            <h2 class="section-title">Meet Kairos</h2>
+            <p style="text-align: center; max-width: 650px; margin: 0 auto 70px; color: rgba(255,255,255,0.7); font-size: 18px;">
+                The first AI sophisticated enough to replace your executive assistant.
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Email management & prioritization</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Calendar scheduling & optimization</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Lead follow-up & nurturing</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Meeting prep & research</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Task management & reminders</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Travel booking & logistics</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Document creation & editing</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-check">✓</div>
+                    <div class="feature-text">Intelligence gathering</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison">
+        <div class="container">
+            <div class="section-label">THE NUMBERS</div>
+            <h2 class="section-title">Do The Math</h2>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <div class="comparison-label">Traditional EA</div>
+                    <div class="comparison-price">$4,500</div>
+                    <div class="comparison-period">/month + benefits</div>
+                    <div class="comparison-features">
+                        • 40 hrs/week max<br>
+                        • Overhead costs<br>
+                        • Management time<br>
+                        • Variable quality
+                    </div>
+                </div>
+                
+                <div class="comparison-card highlight">
+                    <div class="comparison-label">Kairos</div>
+                    <div class="comparison-price">$977</div>
+                    <div class="comparison-period">/month flat</div>
+                    <div class="comparison-features">
+                        • 24/7/365 uptime<br>
+                        • Zero overhead<br>
+                        • Zero management<br>
+                        • Consistent results
+                    </div>
+                </div>
+                
+                <div class="comparison-card">
+                    <div class="comparison-label">Your Time Wasted</div>
+                    <div class="comparison-price">$8,000</div>
+                    <div class="comparison-period">/month lost</div>
+                    <div class="comparison-features">
+                        • 15-20 hrs/week<br>
+                        • On admin work<br>
+                        • Could be revenue<br>
+                        • Or strategic work
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-label">PRICING</div>
+            <h2 class="section-title">Simple & Transparent</h2>
+            
+            <div class="pricing-box">
+                <div class="popular-badge">MOST POPULAR</div>
+                <div class="tier">Executive Tier</div>
+                <div class="price-main">$977</div>
+                <div class="price-period">/month</div>
+                <div class="setup-note">+ $2,500 one-time setup</div>
+                
+                <ul class="pricing-features">
+                    <li><span style="color: #00F5FF;">✓</span> Unlimited email management</li>
+                    <li><span style="color: #00F5FF;">✓</span> Calendar scheduling & optimization</li>
+                    <li><span style="color: #00F5FF;">✓</span> Lead follow-up automation</li>
+                    <li><span style="color: #00F5FF;">✓</span> Meeting prep & research</li>
+                    <li><span style="color: #00F5FF;">✓</span> Task management</li>
+                    <li><span style="color: #00F5FF;">✓</span> Document creation</li>
+                    <li><span style="color: #00F5FF;">✓</span> Research & intelligence</li>
+                    <li><span style="color: #00F5FF;">✓</span> 24/7 availability</li>
+                    <li><span style="color: #00F5FF;">✓</span> Monthly strategy calls</li>
+                </ul>
+                
+                <a href="#" class="btn-primary">Start Onboarding</a>
+                <p class="guarantee-text">30-day money-back guarantee. No questions asked.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-label">FAQ</div>
+            <h2 class="section-title">Common Questions</h2>
+            
+            <div class="faq-grid">
+                <div class="faq-block">
+                    <h3 class="faq-q">How does Kairos integrate with my tools?</h3>
+                    <p class="faq-a">Seamlessly. Gmail, Calendar, Slack, and 100+ apps. Setup in under 30 minutes.</p>
+                </div>
+                
+                <div class="faq-block">
+                    <h3 class="faq-q">Is my data secure?</h3>
+                    <p class="faq-a">Absolutely. Enterprise encryption, SOC 2 compliance. Your data stays private, always.</p>
+                </div>
+                
+                <div class="faq-block">
+                    <h3 class="faq-q">Can I customize the workflow?</h3>
+                    <p class="faq-a">Yes. Every setup includes a dedicated call to configure Kairos to your exact needs.</p>
+                </div>
+                
+                <div class="faq-block">
+                    <h3 class="faq-q">What if I want to cancel?</h3>
+                    <p class="faq-a">No problem. No long-term contracts. Cancel with 30 days notice.</p>
+                </div>
+                
+                <div class="faq-block">
+                    <h3 class="faq-q">How fast can I get started?</h3>
+                    <p class="faq-a">48-72 hours from signup to fully operational. Most clients are live within 3 days.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-final">
+        <div class="container">
+            <h2>Ready to 10x Your Time?</h2>
+            <p>Join 100+ executives who've already made the switch.</p>
+            <a href="#pricing" class="btn-primary">Get Started Now</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Kairos. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
