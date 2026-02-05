@@ -16,23 +16,14 @@
         
         body {
             font-family: 'DM Sans', sans-serif;
-            background: #0D0D0D;
+            background-color: #000;
+            background-image: 
+                radial-gradient(ellipse at top right, rgba(139, 117, 83, 0.03) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.03"/></svg>');
+            background-attachment: fixed;
             color: #E8E8E8;
             line-height: 1.6;
             position: relative;
-        }
-        
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%23000"/><rect width="1" height="1" fill="%23111"/></svg>');
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
         }
         
         h1, h2, h3 {
@@ -93,9 +84,7 @@
         /* Hero */
         .hero {
             padding: 180px 0 140px;
-            background: 
-                radial-gradient(ellipse at center, rgba(26, 26, 26, 0.8) 0%, #0D0D0D 70%),
-                linear-gradient(135deg, rgba(139, 117, 83, 0.03) 0%, transparent 50%);
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
             border-bottom: 1px solid rgba(139, 117, 83, 0.1);
             position: relative;
         }
@@ -276,38 +265,42 @@
         .capabilities {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2px;
-            background: rgba(139, 117, 83, 0.15);
+            gap: 25px;
             max-width: 1100px;
             margin: 0 auto;
         }
         
         .capability {
-            background: #0D0D0D;
-            padding: 40px 45px;
+            background: rgba(13, 13, 13, 0.6);
+            border: 1px solid rgba(139, 117, 83, 0.15);
+            padding: 35px 40px;
             display: flex;
             align-items: flex-start;
-            gap: 25px;
-            transition: background 0.3s;
+            gap: 20px;
+            transition: all 0.3s;
+            border-radius: 8px;
         }
         
         .capability:hover {
-            background: rgba(139, 117, 83, 0.03);
+            background: rgba(139, 117, 83, 0.05);
+            border-color: rgba(139, 117, 83, 0.3);
+            transform: translateY(-2px);
         }
         
         .capability-icon {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: #8B7553;
+            background: #C5A059;
             margin-top: 8px;
             flex-shrink: 0;
+            box-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
         }
         
         .capability-text {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
-            line-height: 1.6;
+            line-height: 1.7;
         }
         
         /* Comparison */
@@ -357,7 +350,9 @@
         .table-header .table-cell:last-child,
         .table-row .table-cell:last-child {
             background: rgba(139, 117, 83, 0.08);
-            border-left: 1px solid rgba(197, 160, 89, 0.3);
+            border-left: 2px solid rgba(197, 160, 89, 0.4);
+            box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.05);
+            position: relative;
         }
         
         .highlight-value {
@@ -583,7 +578,7 @@
         <div class="container">
             <div class="hero-kicker">Executive Intelligence Platform</div>
             <h1>Reclaim 20 Hours<br>of Your Week</h1>
-            <p class="hero-subtitle">Kairos handles your executive workload with the precision of a $200,000 EA—for 70% less. No management. No overhead. Just results.</p>
+            <p class="hero-subtitle">Kairos handles your executive workload with the precision of a $200,000 EA—for a fraction of the cost. No management. No overhead. Just results.</p>
             <a href="#pricing" class="btn-primary">Schedule Onboarding Consultation</a>
             
             <div class="hero-metrics">
@@ -602,14 +597,15 @@
             </div>
             
             <div style="margin-top: 80px; padding-top: 60px; border-top: 1px solid rgba(139, 117, 83, 0.15);">
-                <div style="text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #777; margin-bottom: 30px; font-weight: 600;">Seamlessly Integrates With Your Workflow</div>
-                <div style="display: flex; justify-content: center; align-items: center; gap: 50px; flex-wrap: wrap; opacity: 0.4; filter: grayscale(100%);">
-                    <div style="font-size: 24px; font-weight: 600; color: #A8A8A8;">Gmail</div>
-                    <div style="font-size: 24px; font-weight: 600; color: #A8A8A8;">Google Calendar</div>
-                    <div style="font-size: 24px; font-weight: 600; color: #A8A8A8;">Slack</div>
-                    <div style="font-size: 24px; font-weight: 600; color: #A8A8A8;">Salesforce</div>
-                    <div style="font-size: 24px; font-weight: 600; color: #A8A8A8;">Microsoft 365</div>
-                    <div style="font-size: 24px; font-weight: 600; color: #A8A8A8;">+100 More</div>
+                <div style="text-align: center; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #8B7553; margin-bottom: 35px; font-weight: 600;">Seamlessly Integrates With Your Workflow</div>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 55px; flex-wrap: wrap;">
+                    <div style="font-size: 22px; font-weight: 500; color: #666; filter: grayscale(100%) brightness(150%);">Gmail</div>
+                    <div style="font-size: 22px; font-weight: 500; color: #666; filter: grayscale(100%) brightness(150%);">Calendar</div>
+                    <div style="font-size: 22px; font-weight: 500; color: #666; filter: grayscale(100%) brightness(150%);">Slack</div>
+                    <div style="font-size: 22px; font-weight: 500; color: #666; filter: grayscale(100%) brightness(150%);">Salesforce</div>
+                    <div style="font-size: 22px; font-weight: 500; color: #666; filter: grayscale(100%) brightness(150%);">Outlook</div>
+                    <div style="font-size: 22px; font-weight: 500; color: #666; filter: grayscale(100%) brightness(150%);">Notion</div>
+                    <div style="font-size: 18px; font-weight: 600; color: #8B7553; letter-spacing: 1px;">+100 More</div>
                 </div>
             </div>
         </div>
@@ -703,23 +699,23 @@
                 <div style="font-size: 18px; color: #E8E8E8;">Executive-grade security for your most sensitive data</div>
             </div>
             
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1100px; margin: 0 auto;">
-                <div style="text-align: center; padding: 35px; background: rgba(13, 13, 13, 0.6); border: 1px solid rgba(139, 117, 83, 0.15); border-radius: 8px;">
-                    <div style="font-size: 42px; margin-bottom: 15px; color: #8B7553;">🔒</div>
-                    <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #E8E8E8;">Zero-Retention</div>
-                    <div style="font-size: 13px; color: #888; line-height: 1.6;">We never train on your data. Your information stays yours.</div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; max-width: 1100px; margin: 0 auto;">
+                <div style="text-align: center; padding: 40px 35px; background: rgba(13, 13, 13, 0.8); border: 1px solid rgba(139, 117, 83, 0.2); border-radius: 8px; transition: all 0.3s;">
+                    <div style="font-size: 48px; margin-bottom: 18px; color: #C5A059;">🔒</div>
+                    <div style="font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #E8E8E8;">Military-Grade Privacy</div>
+                    <div style="font-size: 14px; color: #999; line-height: 1.7;">AES-256 encryption at rest. Zero-knowledge architecture protects your data.</div>
                 </div>
                 
-                <div style="text-align: center; padding: 35px; background: rgba(13, 13, 13, 0.6); border: 1px solid rgba(139, 117, 83, 0.15); border-radius: 8px;">
-                    <div style="font-size: 42px; margin-bottom: 15px; color: #8B7553;">🏦</div>
-                    <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #E8E8E8;">Bank-Grade</div>
-                    <div style="font-size: 13px; color: #888; line-height: 1.6;">SOC 2 Type II certified. AES-256 encryption at rest and in transit.</div>
+                <div style="text-align: center; padding: 40px 35px; background: rgba(13, 13, 13, 0.8); border: 1px solid rgba(139, 117, 83, 0.2); border-radius: 8px; transition: all 0.3s;">
+                    <div style="font-size: 48px; margin-bottom: 18px; color: #C5A059;">✓</div>
+                    <div style="font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #E8E8E8;">Independent Audits</div>
+                    <div style="font-size: 14px; color: #999; line-height: 1.7;">SOC 2 Type II compliant infrastructure. Continuously monitored and audited.</div>
                 </div>
                 
-                <div style="text-align: center; padding: 35px; background: rgba(13, 13, 13, 0.6); border: 1px solid rgba(139, 117, 83, 0.15); border-radius: 8px;">
-                    <div style="font-size: 42px; margin-bottom: 15px; color: #8B7553;">🔐</div>
-                    <div style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: #E8E8E8;">Privacy First</div>
-                    <div style="font-size: 13px; color: #888; line-height: 1.6;">Your instance is isolated and private. No shared infrastructure.</div>
+                <div style="text-align: center; padding: 40px 35px; background: rgba(13, 13, 13, 0.8); border: 1px solid rgba(139, 117, 83, 0.2); border-radius: 8px; transition: all 0.3s;">
+                    <div style="font-size: 48px; margin-bottom: 18px; color: #C5A059;">⛔</div>
+                    <div style="font-size: 16px; font-weight: 600; margin-bottom: 10px; color: #E8E8E8;">Zero-Training Policy</div>
+                    <div style="font-size: 14px; color: #999; line-height: 1.7;">Your data is never used to train global models. Stays isolated and private.</div>
                 </div>
             </div>
         </div>
@@ -728,7 +724,7 @@
     <section class="comparison">
         <div class="container">
             <div class="section-header">
-                <div class="section-kicker">Investment Analysis</div>
+                <div class="section-kicker">Operating Cost Analysis</div>
                 <h2 class="section-title">The ROI: Replacing a $200,000 Executive Assistant</h2>
             </div>
             
@@ -739,7 +735,7 @@
                     <div class="table-cell">Kairos</div>
                 </div>
                 <div class="table-row">
-                    <div class="table-cell">Monthly Investment</div>
+                    <div class="table-cell">Monthly Operating Cost</div>
                     <div class="table-cell">$4,500</div>
                     <div class="table-cell highlight-value">$977</div>
                 </div>
@@ -784,7 +780,7 @@
                 <div class="pricing-tier">Executive Tier</div>
                 <div class="pricing-amount">$977</div>
                 <div class="pricing-term">/month</div>
-                <div class="pricing-setup">+ $2,500 White-Glove Executive Integration</div>
+                <div class="pricing-setup">+ $2,500 Dedicated Integration & Security Audit</div>
                 
                 <ul class="pricing-list">
                     <li><span class="check-icon"></span> Unlimited email management</li>
