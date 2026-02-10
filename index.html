@@ -3,221 +3,2563 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairos Landing Pages - Preview</title>
+    <title>Kairos — AI Executive Assistant | Reclaim 15+ Hours Every Week</title>
+    <meta name="description" content="Kairos is the AI executive assistant that handles your calendar, email, research, and operations with human-level judgment. Trusted by 100+ executives. $977/month.">
+    <meta property="og:title" content="Kairos — The AI Executive Assistant">
+    <meta property="og:description" content="Reclaim 15+ hours every week. AI-powered calendar, email, research, and operations for executives who value their time.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ============================================
+           DESIGN SYSTEM
+           ============================================ */
+        :root {
+            --bg-primary: #08080C;
+            --bg-secondary: #0E0E14;
+            --bg-elevated: #14141C;
+            --bg-card: #111118;
+            --accent: #C9A96E;
+            --accent-light: #DFC08A;
+            --accent-warm: #D4B87A;
+            --accent-dim: rgba(201, 169, 110, 0.12);
+            --accent-glow: rgba(201, 169, 110, 0.06);
+            --text-primary: #EAEAED;
+            --text-secondary: #9B9BA3;
+            --text-muted: #5D5D66;
+            --border: rgba(201, 169, 110, 0.10);
+            --border-hover: rgba(201, 169, 110, 0.25);
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --container: 1200px;
+            --section-pad: clamp(80px, 10vw, 160px);
         }
-        
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0A0A0A;
-            color: #F5F5F5;
-            padding: 60px 30px;
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        
+
+        body.loading { overflow: hidden; }
+
+        /* Grain overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        img { max-width: 100%; display: block; }
+        a { color: inherit; text-decoration: none; }
+        button { border: none; background: none; cursor: pointer; font: inherit; }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1.15;
+        }
+
         .container {
-            max-width: 1200px;
+            max-width: var(--container);
             margin: 0 auto;
+            padding: 0 clamp(24px, 4vw, 50px);
         }
-        
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            text-align: center;
+
+        /* ============================================
+           PRELOADER
+           ============================================ */
+        .preloader {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-primary);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
         }
-        
-        .subtitle {
-            text-align: center;
-            color: #888;
-            margin-bottom: 60px;
-            font-size: 18px;
+
+        .preloader.done {
+            opacity: 0;
+            visibility: hidden;
         }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+
+        .preloader-logo {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 8px;
+            color: var(--accent);
+            text-transform: uppercase;
+            opacity: 0;
+            animation: preloaderFadeIn 0.8s ease forwards;
         }
-        
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 40px;
+
+        .preloader-line {
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            margin-top: 24px;
+            animation: preloaderLine 1.2s ease 0.3s forwards;
+        }
+
+        @keyframes preloaderFadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes preloaderLine {
+            to { width: 80px; }
+        }
+
+        /* ============================================
+           CUSTOM CURSOR (desktop only)
+           ============================================ */
+        @media (pointer: fine) {
+            .cursor-dot {
+                position: fixed;
+                width: 6px; height: 6px;
+                background: var(--accent);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 99998;
+                transform: translate(-50%, -50%);
+                transition: width 0.2s, height 0.2s, background 0.2s;
+                mix-blend-mode: difference;
+            }
+
+            .cursor-ring {
+                position: fixed;
+                width: 36px; height: 36px;
+                border: 1px solid rgba(201, 169, 110, 0.4);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 99997;
+                transform: translate(-50%, -50%);
+                transition: width 0.3s, height 0.3s, border-color 0.3s;
+            }
+
+            .cursor-dot.hovering {
+                width: 12px; height: 12px;
+                background: var(--accent-light);
+            }
+
+            .cursor-ring.hovering {
+                width: 52px; height: 52px;
+                border-color: rgba(201, 169, 110, 0.6);
+            }
+
+            body { cursor: none; }
+            a, button, input, [role="button"] { cursor: none; }
+        }
+
+        /* ============================================
+           SCROLL PROGRESS
+           ============================================ */
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            z-index: 10001;
+            width: 0;
+            transition: width 0.05s linear;
+        }
+
+        /* ============================================
+           SCROLL REVEAL
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 2px; left: 0; right: 0;
+            z-index: 1000;
+            padding: 22px 0;
+            transition: all 0.4s ease;
+        }
+
+        .nav.scrolled {
+            padding: 14px 0;
+            background: rgba(8, 8, 12, 0.92);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-cta {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--bg-primary);
+            background: var(--accent);
+            padding: 11px 26px;
             transition: all 0.3s;
         }
-        
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-5px);
+
+        .nav-cta:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
         }
-        
-        .card h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
+
+        .nav-cta::after { display: none; }
+
+        /* Mobile menu toggle */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            z-index: 1002;
         }
-        
-        .card .label {
-            font-size: 12px;
+
+        .nav-toggle span {
+            display: block;
+            width: 22px; height: 1.5px;
+            background: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 4px); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -4px); }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: clamp(120px, 16vw, 200px) 0 var(--section-pad);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Aurora gradient */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 25% 20%, rgba(201, 169, 110, 0.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 60%, rgba(201, 169, 110, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 0%, rgba(212, 184, 122, 0.06) 0%, transparent 40%);
+            animation: aurora 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes aurora {
+            0% { opacity: 0.7; transform: scale(1) rotate(0deg); }
+            100% { opacity: 1; transform: scale(1.08) rotate(1deg); }
+        }
+
+        /* Floating shapes */
+        .hero-shapes {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .hero-shape {
+            position: absolute;
+            border: 1px solid rgba(201, 169, 110, 0.08);
+            opacity: 0;
+            animation: shapeFloat linear infinite;
+        }
+
+        .hero-shape--square {
+            width: 20px; height: 20px;
+            transform: rotate(45deg);
+        }
+
+        .hero-shape--circle {
+            border-radius: 50%;
+        }
+
+        .hero-shape--line {
+            width: 40px; height: 0;
+            border-top: 1px solid rgba(201, 169, 110, 0.06);
+            border-bottom: none; border-left: none; border-right: none;
+        }
+
+        .hero-shape:nth-child(1) { top: 15%; left: 10%; width: 16px; height: 16px; animation-duration: 22s; animation-delay: 0s; }
+        .hero-shape:nth-child(2) { top: 60%; left: 85%; width: 24px; height: 24px; animation-duration: 28s; animation-delay: 2s; }
+        .hero-shape:nth-child(3) { top: 30%; left: 70%; width: 12px; height: 12px; animation-duration: 18s; animation-delay: 4s; }
+        .hero-shape:nth-child(4) { top: 75%; left: 20%; animation-duration: 25s; animation-delay: 1s; }
+        .hero-shape:nth-child(5) { top: 45%; left: 90%; width: 18px; height: 18px; animation-duration: 20s; animation-delay: 3s; }
+        .hero-shape:nth-child(6) { top: 85%; left: 55%; animation-duration: 24s; animation-delay: 5s; }
+        .hero-shape:nth-child(7) { top: 20%; left: 45%; width: 14px; height: 14px; animation-duration: 26s; animation-delay: 2s; }
+        .hero-shape:nth-child(8) { top: 50%; left: 30%; width: 20px; height: 20px; animation-duration: 30s; animation-delay: 0s; }
+
+        @keyframes shapeFloat {
+            0% { opacity: 0; transform: translateY(40px) rotate(0deg); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-60px) rotate(180deg); }
+        }
+
+        .hero .container { position: relative; z-index: 1; }
+
+        .hero-kicker {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hero-kicker::before {
+            content: '';
+            width: 40px; height: 1px;
+            background: var(--accent);
+        }
+
+        /* Word-by-word text reveal */
+        .hero h1 {
+            font-size: clamp(44px, 6.5vw, 86px);
+            font-style: italic;
+            line-height: 1.08;
+            margin-bottom: 32px;
+            letter-spacing: -1.5px;
+            max-width: 880px;
+            color: #F5F5F7;
+        }
+
+        .hero h1 .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(50px) rotateX(40deg);
+            animation: wordReveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transform-origin: bottom center;
+        }
+
+        @keyframes wordReveal {
+            to { opacity: 1; transform: translateY(0) rotateX(0deg); }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(16px, 1.7vw, 20px);
+            color: var(--text-secondary);
+            max-width: 660px;
+            line-height: 1.8;
+            margin-bottom: 48px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+        }
+
+        .hero-metrics {
+            display: flex;
+            gap: clamp(40px, 6vw, 80px);
+            padding-top: 56px;
+            border-top: 1px solid var(--border);
+        }
+
+        .metric { flex: 1; }
+
+        .metric-value {
+            font-size: clamp(36px, 4.5vw, 56px);
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 6px;
+            letter-spacing: -2px;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 20px;
             font-weight: 600;
         }
-        
-        .card p {
-            color: #AAA;
-            line-height: 1.7;
-            margin-bottom: 25px;
-            font-size: 15px;
-        }
-        
-        .features {
-            list-style: none;
-            margin-bottom: 30px;
-            padding: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .features li {
-            padding: 8px 0;
-            color: #888;
-            font-size: 14px;
-        }
-        
-        .features li::before {
-            content: "→ ";
-            color: #FFF;
-        }
-        
-        .btn {
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn-primary {
             display: inline-block;
-            padding: 15px 35px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #FFF;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 19px 44px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 44px rgba(201, 169, 110, 0.25);
+        }
+
+        .btn-primary:hover::before { left: 100%; }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             font-size: 14px;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .btn-secondary:hover { color: var(--accent); }
+
+        .btn-secondary .arrow {
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .btn-secondary:hover .arrow { transform: translateX(5px); }
+
+        /* ============================================
+           SOCIAL PROOF TICKER
+           ============================================ */
+        .proof-ticker {
+            padding: 44px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            overflow: hidden;
+        }
+
+        .proof-ticker-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .ticker-track {
+            display: flex;
+            animation: tickerScroll 30s linear infinite;
+            width: max-content;
+        }
+
+        .ticker-track:hover { animation-play-state: paused; }
+
+        .ticker-item {
+            font-size: clamp(14px, 1.4vw, 17px);
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            white-space: nowrap;
+            padding: 0 clamp(24px, 3vw, 48px);
+            opacity: 0.45;
+            transition: opacity 0.3s;
+        }
+
+        .ticker-item:hover { opacity: 0.8; }
+
+        .ticker-separator {
+            color: var(--accent);
+            opacity: 0.3;
+            padding: 0 8px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        @keyframes tickerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ============================================
+           SECTION SHARED
+           ============================================ */
+        .section-kicker {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-kicker::before {
+            content: '';
+            width: 32px; height: 1px;
+            background: var(--accent);
+        }
+
+        .section-kicker.centered {
+            justify-content: center;
+        }
+
+        .section-kicker.centered::before { display: none; }
+
+        .section-title {
+            font-size: clamp(34px, 4.5vw, 58px);
+            font-style: italic;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+            line-height: 1.15;
+        }
+
+        .section-subtitle {
+            font-size: clamp(15px, 1.4vw, 18px);
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 680px;
+        }
+
+        .section-header { margin-bottom: 72px; }
+
+        .section-divider {
+            width: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 0 auto;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-divider.visible { width: 120px; }
+
+        /* ============================================
+           PROBLEM SECTION
+           ============================================ */
+        .problem {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .pain-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: clamp(32px, 3.5vw, 48px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pain-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .pain-card:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+        .pain-card:hover::before { opacity: 1; }
+
+        .pain-number {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 24px;
+        }
+
+        .pain-title {
+            font-family: var(--font-serif);
+            font-size: clamp(20px, 2vw, 26px);
+            font-style: italic;
+            margin-bottom: 14px;
+        }
+
+        .pain-body {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .cost-panel {
+            background: linear-gradient(135deg, rgba(201, 169, 110, 0.06), rgba(201, 169, 110, 0.02));
+            border: 1px solid var(--border-hover);
+            padding: clamp(48px, 5vw, 80px);
+            margin-top: 56px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cost-panel::before, .cost-panel::after {
+            content: '';
+            position: absolute;
+            width: 60px; height: 60px;
+            border-color: var(--accent);
+            opacity: 0.15;
+        }
+
+        .cost-panel::before { top: 16px; left: 16px; border-top: 1px solid; border-left: 1px solid; }
+        .cost-panel::after { bottom: 16px; right: 16px; border-bottom: 1px solid; border-right: 1px solid; }
+
+        .cost-label {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 18px;
+        }
+
+        .cost-figure {
+            font-size: clamp(48px, 7vw, 84px);
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -3px;
+            margin-bottom: 10px;
+        }
+
+        .cost-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           SOLUTION SECTION
+           ============================================ */
+        .solution {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+            position: relative;
+        }
+
+        .solution::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(to bottom, var(--accent-glow), transparent);
+            pointer-events: none;
+        }
+
+        .solution .container { position: relative; z-index: 1; }
+
+        .solution-intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start;
+        }
+
+        .solution-description {
+            font-size: clamp(15px, 1.3vw, 17px);
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: 32px;
+        }
+
+        .ai-team {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 12px;
+        }
+
+        .ai-agent {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 22px 26px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
             transition: all 0.3s;
         }
-        
-        .btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
+
+        .ai-agent:hover {
+            border-color: var(--border-hover);
+            background: rgba(201, 169, 110, 0.04);
+            transform: translateX(6px);
         }
-        
-        .v1 .label { color: #DAA520; }
-        .v1:hover { border-color: #DAA520; }
-        
-        .v2 .label { color: #00F5FF; }
-        .v2:hover { border-color: #00F5FF; }
-        
-        .v3 .label { color: #8B7553; }
-        .v3:hover { border-color: #8B7553; }
-        
-        .download-all {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+        .ai-agent-icon {
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(201, 169, 110, 0.08);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
         }
-        
-        .download-all h3 {
-            margin-bottom: 20px;
-            font-size: 20px;
+
+        .ai-agent-icon svg {
+            width: 18px; height: 18px;
+            stroke: var(--accent);
+            fill: none; stroke-width: 1.5;
         }
-        
-        .file-list {
-            display: inline-block;
-            text-align: left;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 25px 40px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        .ai-agent-name {
+            font-family: var(--font-serif);
+            font-size: 17px; font-style: italic;
+            margin-bottom: 3px;
         }
-        
-        .file-list a {
-            display: block;
-            color: #00F5FF;
-            text-decoration: none;
-            padding: 8px 0;
-            font-family: 'Courier New', monospace;
+
+        .ai-agent-role { font-size: 13px; color: var(--text-secondary); }
+
+        /* ============================================
+           HOW IT WORKS
+           ============================================ */
+        .how-it-works {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 34px;
+            left: calc(16.67% + 20px);
+            right: calc(16.67% + 20px);
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--border), var(--accent));
+        }
+
+        .step { text-align: center; position: relative; }
+
+        .step-number {
+            width: 68px; height: 68px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 28px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent);
+            font-family: var(--font-serif);
+            font-size: 26px; font-style: italic;
+            color: var(--accent);
+            position: relative; z-index: 1;
+            transition: all 0.4s;
+        }
+
+        .step:hover .step-number {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .step-title {
+            font-family: var(--font-serif);
+            font-size: clamp(18px, 1.8vw, 23px);
+            font-style: italic;
+            margin-bottom: 14px;
+        }
+
+        .step-body {
             font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 300px;
+            margin: 0 auto;
         }
-        
-        .file-list a:hover {
-            color: #FFF;
+
+        /* ============================================
+           FEATURES
+           ============================================ */
+        .features {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .feature-card {
+            padding: clamp(28px, 3vw, 40px);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            display: flex;
+            gap: 22px;
+            align-items: flex-start;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 46px; height: 46px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(201, 169, 110, 0.06);
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            transition: all 0.4s;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: rgba(201, 169, 110, 0.12);
+            border-color: var(--border-hover);
+        }
+
+        .feature-icon svg {
+            width: 20px; height: 20px;
+            stroke: var(--accent);
+            fill: none; stroke-width: 1.5;
+        }
+
+        .feature-name {
+            font-family: var(--font-serif);
+            font-size: clamp(17px, 1.5vw, 21px);
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .feature-card.full-width {
+            grid-column: 1 / -1;
+            max-width: 660px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ============================================
+           ROI CALCULATOR
+           ============================================ */
+        .roi-calc {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .roi-calc::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 40%;
+            background: linear-gradient(to bottom, var(--accent-glow), transparent);
+            pointer-events: none;
+        }
+
+        .roi-calc .container { position: relative; z-index: 1; }
+
+        .calc-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-hover);
+            padding: clamp(36px, 5vw, 64px);
+        }
+
+        .calc-input-group {
+            margin-bottom: 40px;
+        }
+
+        .calc-label {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .calc-value-display {
+            font-size: 28px;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -1px;
+        }
+
+        .calc-slider {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 2px;
+            background: var(--border);
+            outline: none;
+            border-radius: 0;
+        }
+
+        .calc-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px;
+            background: var(--accent);
+            cursor: pointer;
+            border: none;
+            margin-top: 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .calc-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 16px rgba(201, 169, 110, 0.4);
+        }
+
+        .calc-slider::-moz-range-thumb {
+            width: 20px; height: 20px;
+            background: var(--accent);
+            cursor: pointer;
+            border: none;
+            border-radius: 0;
+        }
+
+        .calc-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+
+        .calc-result {
+            text-align: center;
+            padding: 24px 16px;
+            background: rgba(201, 169, 110, 0.04);
+            border: 1px solid var(--border);
+        }
+
+        .calc-result-value {
+            font-size: clamp(28px, 3vw, 40px);
+            font-family: var(--font-sans);
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 6px;
+            letter-spacing: -1px;
+        }
+
+        .calc-result-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .calc-cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .calc-footnote {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        /* ============================================
+           BEFORE / AFTER
+           ============================================ */
+        .before-after {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+        }
+
+        .ba-grid {
+            display: grid;
+            grid-template-columns: 1fr 1px 1fr;
+            gap: 48px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .ba-divider {
+            background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+            opacity: 0.3;
+        }
+
+        .ba-column-title {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 36px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ba-column-title.before { color: var(--text-muted); }
+        .ba-column-title.after { color: var(--accent); }
+
+        .ba-item {
+            display: flex;
+            gap: 16px;
+            padding: 14px 0;
+            align-items: flex-start;
+        }
+
+        .ba-time {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+            min-width: 52px;
+            padding-top: 2px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ba-text {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .ba-col-before .ba-text { color: var(--text-muted); }
+        .ba-col-after .ba-text { color: var(--text-secondary); }
+
+        .ba-highlight {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* ============================================
+           TESTIMONIAL CAROUSEL
+           ============================================ */
+        .testimonials {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+            overflow: hidden;
+        }
+
+        .carousel-viewport {
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 0 clamp(16px, 3vw, 40px);
+        }
+
+        .testimonial-content {
+            text-align: center;
+        }
+
+        .testimonial-stars {
+            color: var(--accent);
+            font-size: 16px;
+            letter-spacing: 6px;
+            margin-bottom: 32px;
+        }
+
+        .testimonial-quote {
+            font-family: var(--font-serif);
+            font-size: clamp(20px, 2.5vw, 30px);
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+        }
+
+        .testimonial-author-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-author-role {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 48px;
+        }
+
+        .carousel-dot {
+            width: 8px; height: 8px;
+            background: var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        /* ============================================
+           COMPARISON
+           ============================================ */
+        .comparison {
+            padding: var(--section-pad) 0;
+            background: var(--bg-primary);
+        }
+
+        .comparison-table {
+            max-width: 940px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            background: rgba(201, 169, 110, 0.04);
+            border-bottom: 2px solid var(--border-hover);
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+
+        .table-row:last-child { border-bottom: none; }
+        .table-row:hover { background: rgba(201, 169, 110, 0.02); }
+
+        .table-cell {
+            padding: 20px 24px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+
+        .table-header .table-cell {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 16px 24px;
+        }
+
+        .table-cell.kairos-col {
+            background: rgba(201, 169, 110, 0.05);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .table-cell.dim { color: var(--text-muted); }
+
+        /* ============================================
+           PRICING
+           ============================================ */
+        .pricing {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .pricing::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 40%;
+            background: linear-gradient(to bottom, var(--accent-glow), transparent);
+            pointer-events: none;
+        }
+
+        .pricing .container { position: relative; z-index: 1; }
+
+        .pricing-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            align-items: start;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+
+        .pricing-context h3 {
+            font-size: clamp(26px, 2.8vw, 38px);
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .pricing-context p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .pricing-anchors { margin-top: 28px; }
+
+        .anchor-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .anchor-label { font-size: 13px; color: var(--text-secondary); }
+        .anchor-value { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-left: auto; }
+        .anchor-value.strike { text-decoration: line-through; color: var(--text-muted); }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-hover);
+            padding: clamp(36px, 4vw, 56px);
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -14px; left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 7px 28px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+
+        .pricing-tier {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin: 8px 0 18px;
+            font-weight: 600;
+        }
+
+        .pricing-amount {
+            font-size: clamp(56px, 7vw, 80px);
+            font-family: var(--font-sans);
+            font-weight: 700;
+            letter-spacing: -3px;
+            margin-bottom: 6px;
+        }
+
+        .pricing-term { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
+        .pricing-setup { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+
+        .pricing-hourly {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 32px;
+            padding: 10px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            list-style: none;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .pricing-check {
+            width: 5px; height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .guarantee-box {
+            background: rgba(201, 169, 110, 0.05);
+            border: 1px solid var(--border);
+            padding: 18px 20px;
+            margin-bottom: 28px;
+        }
+
+        .guarantee-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .guarantee-text { font-size: 13px; color: var(--text-secondary); }
+
+        /* ============================================
+           SECURITY
+           ============================================ */
+        .security {
+            padding: 56px 0;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 36px;
+            text-align: center;
+        }
+
+        .security-item-icon { margin-bottom: 14px; }
+
+        .security-item-icon svg {
+            width: 28px; height: 28px;
+            stroke: var(--accent);
+            fill: none; stroke-width: 1.5;
+            margin: 0 auto; display: block;
+        }
+
+        .security-item-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        .security-item-desc { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+
+        /* ============================================
+           FAQ
+           ============================================ */
+        .faq {
+            padding: var(--section-pad) 0;
+            background: var(--bg-secondary);
+        }
+
+        .faq-list { max-width: 780px; margin: 0 auto; }
+
+        .faq-item { border-bottom: 1px solid var(--border); }
+
+        .faq-question {
+            padding: 26px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            gap: 24px;
+            transition: color 0.3s;
+        }
+
+        .faq-question:hover { color: var(--accent); }
+
+        .faq-question h3 {
+            font-size: clamp(17px, 1.5vw, 21px);
+            font-style: italic;
+        }
+
+        .faq-toggle {
+            width: 24px; height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .faq-toggle::before, .faq-toggle::after {
+            content: '';
+            position: absolute;
+            background: var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .faq-toggle::before { width: 12px; height: 1px; }
+        .faq-toggle::after { width: 1px; height: 12px; }
+
+        .faq-item.active .faq-toggle::after { transform: rotate(90deg); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .faq-item.active .faq-answer { max-height: 300px; }
+
+        .faq-answer p {
+            padding-bottom: 26px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        /* ============================================
+           FINAL CTA
+           ============================================ */
+        .final-cta {
+            padding: clamp(100px, 14vw, 200px) 0;
+            text-align: center;
+            background: var(--bg-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(ellipse, rgba(201, 169, 110, 0.05), transparent 70%);
+            pointer-events: none;
+        }
+
+        .final-cta .container { position: relative; z-index: 1; }
+
+        .final-cta h2 {
+            font-size: clamp(34px, 5vw, 64px);
+            font-style: italic;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .final-cta-quote {
+            font-family: var(--font-serif);
+            font-size: clamp(17px, 1.8vw, 22px);
+            font-style: italic;
+            color: var(--accent);
+            max-width: 680px;
+            margin: 0 auto 18px;
+            line-height: 1.5;
+        }
+
+        .final-cta-sub {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 44px;
+        }
+
+        /* ============================================
+           NOTIFICATION TOASTS
+           ============================================ */
+        .toast-container {
+            position: fixed;
+            bottom: 32px; right: 32px;
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-hover);
+            padding: 16px 24px;
+            max-width: 340px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            opacity: 0;
+            transform: translateX(40px);
+            animation: toastIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       toastOut 0.4s ease 5s forwards;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast-icon {
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 5px;
+            box-shadow: 0 0 8px rgba(201, 169, 110, 0.5);
+        }
+
+        .toast-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .toast-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @keyframes toastIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateX(40px); }
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            padding: 52px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .solution-intro { grid-template-columns: 1fr; gap: 48px; }
+            .pricing-layout { grid-template-columns: 1fr; gap: 44px; }
+            .table-header, .table-row { grid-template-columns: 2fr 1fr 1fr; }
+            .table-header .table-cell:nth-child(3),
+            .table-row .table-cell:nth-child(3) { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(8, 8, 12, 0.97);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 28px;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.4s;
+            }
+
+            .nav-links.open { opacity: 1; pointer-events: all; }
+            .nav-links a { font-size: 16px; letter-spacing: 3px; }
+            .nav-toggle { display: flex; }
+
+            .pain-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; gap: 48px; }
+            .steps::before { display: none; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .feature-card.full-width { max-width: 100%; }
+            .hero-metrics { flex-direction: column; gap: 28px; }
+            .hero-actions { flex-direction: column; align-items: flex-start; }
+            .security-grid { grid-template-columns: 1fr; gap: 28px; }
+
+            .ba-grid { grid-template-columns: 1fr; gap: 48px; }
+            .ba-divider { display: none; }
+
+            .calc-results { grid-template-columns: 1fr; }
+
+            .table-header, .table-row { grid-template-columns: 1.5fr 1fr; }
+            .table-header .table-cell:nth-child(2),
+            .table-row .table-cell:nth-child(2) { display: none; }
+            .table-header .table-cell:nth-child(3),
+            .table-row .table-cell:nth-child(3) { display: flex; }
+
+            .toast-container { bottom: 16px; right: 16px; left: 16px; }
+            .toast { max-width: 100%; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 36px; }
+            .pricing-amount { font-size: 52px; }
+            .cost-figure { font-size: 44px; }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Kairos Landing Pages</h1>
-        <p class="subtitle">Three world-class designs for high-ticket executive buyers</p>
-        
-        <div class="grid">
-            <div class="card v1">
-                <div class="label">Version 1</div>
-                <h2>Luxury Premium</h2>
-                <p>Old-money sophistication meets modern design. Gold accents on deep black with serif elegance.</p>
-                
-                <ul class="features">
-                    <li>Gold gradient (#DAA520)</li>
-                    <li>Playfair Display serif</li>
-                    <li>Traditional, timeless</li>
-                    <li>Best for: Finance, law, executives 45+</li>
-                </ul>
-                
-                <a href="kairos-landing-v1-luxury.html" class="btn" target="_blank">View Page</a>
+<body class="loading">
+
+    <!-- PRELOADER -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-logo">Kairos</div>
+        <div class="preloader-line"></div>
+    </div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- SCROLL PROGRESS -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="nav" id="nav">
+        <div class="container">
+            <a href="#" class="nav-logo">Kairos</a>
+            <div class="nav-links" id="navLinks">
+                <a href="#solution">How It Works</a>
+                <a href="#features">Capabilities</a>
+                <a href="#roi">ROI</a>
+                <a href="#pricing">Investment</a>
+                <a href="#faq">FAQ</a>
+                <a href="#pricing" class="nav-cta">Get Started</a>
             </div>
-            
-            <div class="card v2">
-                <div class="label">Version 2</div>
-                <h2>Modern Tech</h2>
-                <p>Silicon Valley energy with animated backgrounds. Cyan/blue neon on pure black.</p>
-                
-                <ul class="features">
-                    <li>Electric cyan (#00F5FF)</li>
-                    <li>Syne bold modern</li>
-                    <li>Fast, innovative</li>
-                    <li>Best for: Tech founders, SaaS CEOs 30-45</li>
-                </ul>
-                
-                <a href="kairos-landing-v2-modern.html" class="btn" target="_blank">View Page</a>
-            </div>
-            
-            <div class="card v3">
-                <div class="label">Version 3</div>
-                <h2>Executive Power</h2>
-                <p>Bloomberg Terminal aesthetic. Bronze/cognac with minimal, authoritative design.</p>
-                
-                <ul class="features">
-                    <li>Muted bronze (#8B7553)</li>
-                    <li>DM Serif italic</li>
-                    <li>Data-driven, precise</li>
-                    <li>Best for: C-suite, Fortune 500, consultants</li>
-                </ul>
-                
-                <a href="kairos-landing-v3-executive.html" class="btn" target="_blank">View Page</a>
+            <div class="nav-toggle" id="navToggle" role="button" tabindex="0" aria-label="Menu">
+                <span></span><span></span><span></span>
             </div>
         </div>
-        
-        <div class="download-all">
-            <h3>Download Individual Files</h3>
-            <div class="file-list">
-                <a href="kairos-landing-v1-luxury.html" download>kairos-landing-v1-luxury.html</a>
-                <a href="kairos-landing-v2-modern.html" download>kairos-landing-v2-modern.html</a>
-                <a href="kairos-landing-v3-executive.html" download>kairos-landing-v3-executive.html</a>
-                <a href="kairos-landing-presentation.md" download>kairos-landing-presentation.md</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-shapes">
+            <div class="hero-shape hero-shape--square"></div>
+            <div class="hero-shape hero-shape--circle"></div>
+            <div class="hero-shape hero-shape--square"></div>
+            <div class="hero-shape hero-shape--line"></div>
+            <div class="hero-shape hero-shape--circle"></div>
+            <div class="hero-shape hero-shape--line"></div>
+            <div class="hero-shape hero-shape--square"></div>
+            <div class="hero-shape hero-shape--circle"></div>
+        </div>
+        <div class="container">
+            <div class="hero-kicker reveal">AI Executive Intelligence</div>
+            <h1 id="heroHeadline">You Didn't Build Your Empire to Drown in Admin</h1>
+            <p class="hero-subtitle reveal reveal-delay-3">Kairos is the AI executive assistant that handles your calendar, email, research, and operations&mdash;reclaiming 15+ hours every week so you can focus on what actually moves the needle.</p>
+            <div class="hero-actions reveal reveal-delay-4">
+                <a href="#pricing" class="btn-primary magnetic">Claim Your Edge</a>
+                <a href="#solution" class="btn-secondary">See How It Works <span class="arrow">&rarr;</span></a>
             </div>
+            <div class="hero-metrics">
+                <div class="metric reveal reveal-delay-3">
+                    <span class="metric-value" data-target="15" data-suffix="+hrs">0</span>
+                    <span class="metric-label">Reclaimed Weekly</span>
+                </div>
+                <div class="metric reveal reveal-delay-4">
+                    <span class="metric-value" data-target="42" data-prefix="$" data-suffix="K+">0</span>
+                    <span class="metric-label">Annual Savings</span>
+                </div>
+                <div class="metric reveal reveal-delay-5">
+                    <span class="metric-value" data-target="100" data-suffix="+">0</span>
+                    <span class="metric-label">Executives Served</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL PROOF TICKER -->
+    <div class="proof-ticker">
+        <div class="proof-ticker-label reveal">Trusted by executives at</div>
+        <div class="ticker-track">
+            <span class="ticker-item">Sequoia</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">McKinsey</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Goldman Sachs</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Andreessen Horowitz</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Deloitte</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Y Combinator</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Bain Capital</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">JPMorgan</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Sequoia</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">McKinsey</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Goldman Sachs</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Andreessen Horowitz</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Deloitte</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Y Combinator</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">Bain Capital</span><span class="ticker-separator">&bull;</span>
+            <span class="ticker-item">JPMorgan</span><span class="ticker-separator">&bull;</span>
         </div>
     </div>
+
+    <!-- PROBLEM -->
+    <section class="problem">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">The Cost of Doing It All</div>
+                <h2 class="section-title reveal reveal-delay-1">Your Brilliance Is Being Wasted on Busywork</h2>
+                <p class="section-subtitle reveal reveal-delay-2">At $100&ndash;500/hour, every minute on admin is revenue you'll never recover.</p>
+            </div>
+            <div class="pain-grid">
+                <div class="pain-card reveal">
+                    <div class="pain-number">01</div>
+                    <h3 class="pain-title">The $500 Email</h3>
+                    <p class="pain-body">You're a $200/hour executive sorting 200+ emails a day. Every hour in your inbox costs thousands in opportunities you never even saw.</p>
+                </div>
+                <div class="pain-card reveal reveal-delay-1">
+                    <div class="pain-number">02</div>
+                    <h3 class="pain-title">Calendar Whiplash</h3>
+                    <p class="pain-body">Back-to-back meetings with zero prep. Double bookings. Timezone chaos. Your schedule runs you instead of the other way around.</p>
+                </div>
+                <div class="pain-card reveal reveal-delay-2">
+                    <div class="pain-number">03</div>
+                    <h3 class="pain-title">The Follow-Up Graveyard</h3>
+                    <p class="pain-body">That investor intro you forgot. The proposal in drafts. The intel you never reviewed. Revenue, walking out the door.</p>
+                </div>
+            </div>
+            <div class="cost-panel reveal">
+                <div class="cost-label">Your Monthly Administrative Tax</div>
+                <div class="cost-figure">$6,000&ndash;10,000</div>
+                <div class="cost-desc">Lost every month to work that shouldn't require your involvement.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTION -->
+    <section class="solution" id="solution">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">Meet Your New Chief of Staff</div>
+                <h2 class="section-title reveal reveal-delay-1">Executive Intelligence,<br>Not Just Automation</h2>
+            </div>
+            <div class="solution-intro">
+                <div>
+                    <p class="solution-description reveal">Unlike chatbots and basic schedulers, Kairos operates with human-level judgment. It learns your priorities, anticipates your needs, and executes with the precision of a seasoned executive assistant&mdash;without the $200K salary.</p>
+                    <p class="solution-description reveal reveal-delay-1">Three specialized AI agents work in concert, each mastering a domain of your professional life so nothing falls through the cracks.</p>
+                </div>
+                <div class="ai-team">
+                    <div class="ai-agent reveal">
+                        <div class="ai-agent-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+                        <div>
+                            <div class="ai-agent-name">Kairos</div>
+                            <div class="ai-agent-role">The Orchestrator &mdash; Calendar, email, daily ops</div>
+                        </div>
+                    </div>
+                    <div class="ai-agent reveal reveal-delay-1">
+                        <div class="ai-agent-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+                        <div>
+                            <div class="ai-agent-name">Atlas</div>
+                            <div class="ai-agent-role">The Operator &mdash; Tasks, logistics, execution</div>
+                        </div>
+                    </div>
+                    <div class="ai-agent reveal reveal-delay-2">
+                        <div class="ai-agent-icon"><svg viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg></div>
+                        <div>
+                            <div class="ai-agent-name">Midas</div>
+                            <div class="ai-agent-role">The Strategist &mdash; Research, intel, prep</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
+                <div class="section-kicker centered reveal">Three Steps to Freedom</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">Live in 48 Hours. ROI in 48 More.</h2>
+            </div>
+            <div class="steps">
+                <div class="step reveal">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Onboard in 48 Hours</h3>
+                    <p class="step-body">We connect to your tools&mdash;Gmail, Calendar, Slack, CRM&mdash;and learn your workflows through white-glove setup.</p>
+                </div>
+                <div class="step reveal reveal-delay-1">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Kairos Takes the Wheel</h3>
+                    <p class="step-body">Email triage, calendar optimization, meeting prep, follow-ups, research&mdash;handled with judgment you can trust.</p>
+                </div>
+                <div class="step reveal reveal-delay-2">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">You Focus on What Matters</h3>
+                    <p class="step-body">15+ hours reclaimed every week. No admin debt. Just the strategic work that grows your business.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">Core Capabilities</div>
+                <h2 class="section-title reveal reveal-delay-1">Everything a World-Class EA Does.<br>Nothing They Can't.</h2>
+                <p class="section-subtitle reveal reveal-delay-2">Powered by AI that learns your patterns and gets sharper every week.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                    <div>
+                        <h3 class="feature-name">Calendar Intelligence</h3>
+                        <p class="feature-desc">Not just scheduling&mdash;prioritization. Ranks meetings by revenue impact and strategic importance. Protects your deep work blocks.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                    <div>
+                        <h3 class="feature-name">Email Command Center</h3>
+                        <p class="feature-desc">Surfaces the 5% that needs your eyes. Drafts responses for the rest. Maintains your voice. Inbox zero becomes default.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                    <div>
+                        <h3 class="feature-name">Research on Demand</h3>
+                        <p class="feature-desc">Competitive intel, due diligence, market analysis&mdash;synthesized into executive briefings before you need them.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal reveal-delay-1">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                    <div>
+                        <h3 class="feature-name">Relationship Autopilot</h3>
+                        <p class="feature-desc">Automated follow-ups, birthday notes, check-ins. Every connection stays warm without a reminder on your list.</p>
+                    </div>
+                </div>
+                <div class="feature-card full-width reveal">
+                    <div class="feature-icon"><svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></div>
+                    <div>
+                        <h3 class="feature-name">Task Orchestration</h3>
+                        <p class="feature-desc">Coordinates across your entire stack&mdash;Slack, CRM, docs, projects. Atlas ensures every commitment is tracked, every deadline met.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI CALCULATOR -->
+    <section class="roi-calc" id="roi">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
+                <div class="section-kicker centered reveal">See Your Savings</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">Calculate Your ROI</h2>
+                <p class="section-subtitle reveal reveal-delay-2" style="text-align:center; margin: 0 auto;">Input your hourly rate to see exactly what Kairos saves you.</p>
+            </div>
+            <div class="calc-container reveal">
+                <div class="calc-input-group">
+                    <div class="calc-label">
+                        <span>Your Hourly Rate</span>
+                        <span class="calc-value-display" id="rateDisplay">$250</span>
+                    </div>
+                    <input type="range" class="calc-slider" id="rateSlider" min="100" max="1000" step="25" value="250">
+                </div>
+                <div class="calc-input-group">
+                    <div class="calc-label">
+                        <span>Hours/Week on Admin</span>
+                        <span class="calc-value-display" id="hoursDisplay">15</span>
+                    </div>
+                    <input type="range" class="calc-slider" id="hoursSlider" min="5" max="30" step="1" value="15">
+                </div>
+                <div class="calc-results">
+                    <div class="calc-result">
+                        <div class="calc-result-value" id="monthlySaved">$16,250</div>
+                        <div class="calc-result-label">Monthly Value Saved</div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="calc-result-value" id="annualSaved">$195,000</div>
+                        <div class="calc-result-label">Annual Value Saved</div>
+                    </div>
+                    <div class="calc-result">
+                        <div class="calc-result-value" id="roiMultiple">16.6x</div>
+                        <div class="calc-result-label">Return on Investment</div>
+                    </div>
+                </div>
+                <div class="calc-cta">
+                    <a href="#pricing" class="btn-primary magnetic" style="margin-top: 32px;">Claim Your Edge</a>
+                </div>
+                <p class="calc-footnote">Based on Kairos reclaiming ~65% of admin hours. Actual results vary.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BEFORE / AFTER -->
+    <section class="before-after">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
+                <div class="section-kicker centered reveal">The Transformation</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">Your Day, Reimagined</h2>
+            </div>
+            <div class="ba-grid reveal">
+                <div class="ba-col-before">
+                    <div class="ba-column-title before">Without Kairos</div>
+                    <div class="ba-item"><span class="ba-time">6:30</span><span class="ba-text">Wake up to 127 unread emails</span></div>
+                    <div class="ba-item"><span class="ba-time">7:00</span><span class="ba-text">Start triaging inbox, responding to urgent messages</span></div>
+                    <div class="ba-item"><span class="ba-time">8:30</span><span class="ba-text">Realize you double-booked two client calls</span></div>
+                    <div class="ba-item"><span class="ba-time">9:00</span><span class="ba-text">Scramble to reschedule, apologize to partners</span></div>
+                    <div class="ba-item"><span class="ba-time">10:00</span><span class="ba-text">Back-to-back meetings, no prep, winging it</span></div>
+                    <div class="ba-item"><span class="ba-time">12:00</span><span class="ba-text">Working lunch catching up on Slack threads</span></div>
+                    <div class="ba-item"><span class="ba-time">2:00</span><span class="ba-text">Finally start the strategic work you planned</span></div>
+                    <div class="ba-item"><span class="ba-time">4:00</span><span class="ba-text">Interrupted by follow-ups and scheduling requests</span></div>
+                    <div class="ba-item"><span class="ba-time">6:30</span><span class="ba-text">Leave exhausted. Tomorrow's inbox already overflowing.</span></div>
+                </div>
+                <div class="ba-divider"></div>
+                <div class="ba-col-after">
+                    <div class="ba-column-title after">With Kairos</div>
+                    <div class="ba-item"><span class="ba-time">6:30</span><span class="ba-text">Wake up to a <span class="ba-highlight">clean briefing: 5 items need you</span></span></div>
+                    <div class="ba-item"><span class="ba-time">7:00</span><span class="ba-text"><span class="ba-highlight">Review pre-drafted responses</span>, approve with one tap</span></div>
+                    <div class="ba-item"><span class="ba-time">8:00</span><span class="ba-text">Calendar optimized &mdash; <span class="ba-highlight">deep work block protected</span></span></div>
+                    <div class="ba-item"><span class="ba-time">10:00</span><span class="ba-text">Walk into your first meeting <span class="ba-highlight">fully briefed by Midas</span></span></div>
+                    <div class="ba-item"><span class="ba-time">12:00</span><span class="ba-text">Kairos handled <span class="ba-highlight">3 follow-ups and 1 conflict</span></span></div>
+                    <div class="ba-item"><span class="ba-time">1:00</span><span class="ba-text"><span class="ba-highlight">Uninterrupted strategic work</span> all afternoon</span></div>
+                    <div class="ba-item"><span class="ba-time">4:00</span><span class="ba-text">Quick review of <span class="ba-highlight">Kairos's daily summary</span></span></div>
+                    <div class="ba-item"><span class="ba-time">5:00</span><span class="ba-text"><span class="ba-highlight">Leave on time.</span> Tomorrow's already handled.</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS CAROUSEL -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
+                <div class="section-kicker centered reveal">What Executives Say</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">The Results Speak for Themselves</h2>
+            </div>
+            <div class="carousel-viewport reveal">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide">
+                        <div class="testimonial-content">
+                            <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                            <p class="testimonial-quote">&ldquo;Kairos gave me back my Mondays. I used to spend the first half of every week buried in email and scheduling chaos. Now I walk in focused and ready to lead.&rdquo;</p>
+                            <div class="testimonial-author-name">Sarah Chen</div>
+                            <div class="testimonial-author-role">CEO, Vertex Capital</div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="testimonial-content">
+                            <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                            <p class="testimonial-quote">&ldquo;I went from 3 hours a day on email to 15 minutes. The ROI was obvious within the first week. I genuinely don't know how I ran my business before Kairos.&rdquo;</p>
+                            <div class="testimonial-author-name">James Morrison</div>
+                            <div class="testimonial-author-role">Founder, Apex Group</div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="testimonial-content">
+                            <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                            <p class="testimonial-quote">&ldquo;My previous EA cost $7K/month and still missed things. Kairos costs a fraction and has never dropped the ball. The meeting prep alone is worth the investment.&rdquo;</p>
+                            <div class="testimonial-author-name">Dr. Maria Santos</div>
+                            <div class="testimonial-author-role">Managing Partner, Meridian Advisory</div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="testimonial-content">
+                            <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                            <p class="testimonial-quote">&ldquo;The competitive research alone saves me 6 hours a week. Midas delivers briefings that are better than what my analyst used to produce. Game changer.&rdquo;</p>
+                            <div class="testimonial-author-name">David Park</div>
+                            <div class="testimonial-author-role">CTO, NovaTech Systems</div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="testimonial-content">
+                            <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                            <p class="testimonial-quote">&ldquo;First tool that actually understands priority. It doesn't just schedule&mdash;it thinks about what deserves my time and what doesn't. That's executive intelligence.&rdquo;</p>
+                            <div class="testimonial-author-name">Rebecca Torres</div>
+                            <div class="testimonial-author-role">COO, Atlas Ventures</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </section>
+
+    <!-- COMPARISON -->
+    <section class="comparison">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
+                <div class="section-kicker centered reveal">Side by Side</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">The Math Is Simple</h2>
+            </div>
+            <div class="comparison-table reveal">
+                <div class="table-header">
+                    <div class="table-cell"></div>
+                    <div class="table-cell">Human EA</div>
+                    <div class="table-cell">Virtual Asst.</div>
+                    <div class="table-cell kairos-col">Kairos</div>
+                </div>
+                <div class="table-row"><div class="table-cell">Monthly Cost</div><div class="table-cell dim">$5,000&ndash;8,000</div><div class="table-cell dim">$1,500&ndash;3,000</div><div class="table-cell kairos-col">$977</div></div>
+                <div class="table-row"><div class="table-cell">Benefits &amp; Overhead</div><div class="table-cell dim">$1,500+/mo</div><div class="table-cell dim">$0</div><div class="table-cell kairos-col">$0</div></div>
+                <div class="table-row"><div class="table-cell">Availability</div><div class="table-cell dim">40 hrs/week</div><div class="table-cell dim">20&ndash;40 hrs</div><div class="table-cell kairos-col">24/7/365</div></div>
+                <div class="table-row"><div class="table-cell">Response Time</div><div class="table-cell dim">Hours</div><div class="table-cell dim">Hours</div><div class="table-cell kairos-col">Seconds</div></div>
+                <div class="table-row"><div class="table-cell">Ramp-Up Time</div><div class="table-cell dim">2&ndash;3 months</div><div class="table-cell dim">2&ndash;4 weeks</div><div class="table-cell kairos-col">48 hours</div></div>
+                <div class="table-row"><div class="table-cell">Management Overhead</div><div class="table-cell dim">5&ndash;10 hrs/mo</div><div class="table-cell dim">3&ndash;5 hrs/mo</div><div class="table-cell kairos-col">Zero</div></div>
+                <div class="table-row"><div class="table-cell">Annual Net Savings</div><div class="table-cell dim">&mdash;</div><div class="table-cell dim">&mdash;</div><div class="table-cell kairos-col">$42,000+</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
+                <div class="section-kicker centered reveal">Your Time Has a Price. Protect It.</div>
+                <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">One Plan. No Complexity.</h2>
+            </div>
+            <div class="pricing-layout">
+                <div class="pricing-context reveal">
+                    <h3>An Investment That Pays for Itself in&nbsp;the First&nbsp;Week</h3>
+                    <p>If your time is worth $200/hour, Kairos pays for itself in less than 5 hours of saved time per month. Most executives reclaim 15+ hours in their first week.</p>
+                    <p>Compare that to a full-time EA at $60&ndash;96K/year plus benefits, training, management, and turnover risk.</p>
+                    <div class="pricing-anchors">
+                        <div class="anchor-item"><span class="anchor-label">Full-time EA (salary + benefits)</span><span class="anchor-value strike">$7,000&ndash;10,000/mo</span></div>
+                        <div class="anchor-item"><span class="anchor-label">Part-time virtual assistant</span><span class="anchor-value strike">$1,500&ndash;3,000/mo</span></div>
+                        <div class="anchor-item"><span class="anchor-label">Kairos Executive Tier</span><span class="anchor-value" style="color:var(--accent);">$977/mo</span></div>
+                    </div>
+                </div>
+                <div class="pricing-card reveal reveal-delay-1">
+                    <div class="pricing-badge">Executive Tier</div>
+                    <div class="pricing-tier">Full-Service AI Assistant</div>
+                    <div class="pricing-amount">$977</div>
+                    <div class="pricing-term">per month</div>
+                    <div class="pricing-setup">+ $2,500 one-time integration &amp; configuration</div>
+                    <div class="pricing-hourly">Less than $49/hr for 20+ hours reclaimed</div>
+                    <ul class="pricing-features">
+                        <li><span class="pricing-check"></span>Unlimited email management &amp; triage</li>
+                        <li><span class="pricing-check"></span>Calendar scheduling &amp; optimization</li>
+                        <li><span class="pricing-check"></span>Automated follow-ups &amp; nurturing</li>
+                        <li><span class="pricing-check"></span>Meeting preparation &amp; research</li>
+                        <li><span class="pricing-check"></span>Task orchestration across your stack</li>
+                        <li><span class="pricing-check"></span>Document creation &amp; review</li>
+                        <li><span class="pricing-check"></span>Competitive intel &amp; market research</li>
+                        <li><span class="pricing-check"></span>24/7/365 availability</li>
+                        <li><span class="pricing-check"></span>Monthly strategy sessions</li>
+                        <li><span class="pricing-check"></span>Dedicated success manager</li>
+                    </ul>
+                    <div class="guarantee-box">
+                        <div class="guarantee-title">30-Day Performance Guarantee</div>
+                        <div class="guarantee-text">Full refund if Kairos doesn't meet your standards.</div>
+                    </div>
+                    <a href="#" class="btn-primary magnetic" style="width:100%;text-align:center;">Claim Your Edge</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECURITY -->
+    <section class="security">
+        <div class="container">
+            <div class="security-grid">
+                <div class="reveal">
+                    <div class="security-item-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                    <div class="security-item-title">AES-256 Encryption</div>
+                    <div class="security-item-desc">End-to-end encryption at rest and in transit.</div>
+                </div>
+                <div class="reveal reveal-delay-1">
+                    <div class="security-item-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                    <div class="security-item-title">SOC 2 Type II Compliant</div>
+                    <div class="security-item-desc">Independently audited. Continuously monitored.</div>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <div class="security-item-icon"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+                    <div class="security-item-title">Zero-Training Policy</div>
+                    <div class="security-item-desc">Your data never trains models. Private and yours alone.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker reveal">Common Questions</div>
+                <h2 class="section-title reveal reveal-delay-1">Straight Answers</h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>How does Kairos actually work? Is it fully automated?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer"><p>Kairos combines three specialized AI agents&mdash;each handling a domain of your work. It connects to your tools and handles tasks autonomously based on patterns it learns from you. For sensitive decisions, it checks with you first. Think of it as a brilliant EA who knows when to act and when to ask.</p></div>
+                </div>
+                <div class="faq-item reveal reveal-delay-1">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>What's the $2,500 setup fee for?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer"><p>Dedicated onboarding: tool integration, security audit, workflow mapping, priority calibration, and a 1-on-1 session to configure Kairos to your exact operating style. It's the difference between a generic tool and a true executive partner.</p></div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>Is my data secure?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer"><p>AES-256 encryption, SOC 2 Type II compliance, zero-knowledge architecture, and a strict zero-training policy. Your data is never used to improve our models. Same standards as top-tier financial institutions.</p></div>
+                </div>
+                <div class="faq-item reveal reveal-delay-1">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>What tools does Kairos integrate with?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer"><p>Gmail, Google Calendar, Outlook, Slack, Salesforce, HubSpot, Notion, Asana, Monday.com, LinkedIn, and 100+ more. If you use it daily, Kairos supports it. Setup takes under 30 minutes per tool.</p></div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>Can I cancel anytime?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer"><p>No contracts. Cancel with 30 days notice. If Kairos doesn't meet expectations within the first 30 days, full refund of your monthly fee. We keep clients because they want to stay.</p></div>
+                </div>
+                <div class="faq-item reveal reveal-delay-1">
+                    <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+                        <h3>How quickly can I get started?</h3>
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer"><p>Most executives are operational within 48&ndash;72 hours. Kairos reaches peak performance within two weeks. You'll notice the difference in your first week.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="section-kicker centered reveal">Limited Availability</div>
+            <h2 class="reveal reveal-delay-1">Stop Trading Hours for Tasks</h2>
+            <p class="final-cta-quote reveal reveal-delay-2">&ldquo;The executives who win aren't working harder.<br>They have better systems.&rdquo;</p>
+            <p class="final-cta-sub reveal reveal-delay-3">Join 100+ leaders who've already made the shift.</p>
+            <a href="#pricing" class="btn-primary magnetic reveal reveal-delay-4">Claim Your Edge</a>
+        </div>
+    </section>
+
+    <!-- NOTIFICATION TOASTS -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Kairos. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT
+         ========================================== -->
+    <script>
+    (function() {
+        'use strict';
+
+        // ========================================
+        // PRELOADER
+        // ========================================
+        var preloader = document.getElementById('preloader');
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                preloader.classList.add('done');
+                document.body.classList.remove('loading');
+                initHeroTextReveal();
+            }, 1400);
+        });
+
+        // ========================================
+        // HERO TEXT REVEAL (word-by-word)
+        // ========================================
+        function initHeroTextReveal() {
+            var headline = document.getElementById('heroHeadline');
+            var text = headline.textContent;
+            var words = text.split(' ');
+            headline.innerHTML = '';
+            words.forEach(function(word, i) {
+                var span = document.createElement('span');
+                span.className = 'word';
+                span.textContent = word;
+                span.style.animationDelay = (i * 0.08 + 0.1) + 's';
+                headline.appendChild(span);
+                if (i < words.length - 1) {
+                    headline.appendChild(document.createTextNode(' '));
+                }
+            });
+        }
+
+        // ========================================
+        // CUSTOM CURSOR
+        // ========================================
+        if (window.matchMedia('(pointer: fine)').matches) {
+            var dot = document.getElementById('cursorDot');
+            var ring = document.getElementById('cursorRing');
+            var mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                dot.style.left = mouseX + 'px';
+                dot.style.top = mouseY + 'px';
+            });
+
+            function animateRing() {
+                ringX += (mouseX - ringX) * 0.15;
+                ringY += (mouseY - ringY) * 0.15;
+                ring.style.left = ringX + 'px';
+                ring.style.top = ringY + 'px';
+                requestAnimationFrame(animateRing);
+            }
+            animateRing();
+
+            // Hover detection
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.closest('a, button, input, [role="button"], .faq-question')) {
+                    dot.classList.add('hovering');
+                    ring.classList.add('hovering');
+                }
+            });
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.closest('a, button, input, [role="button"], .faq-question')) {
+                    dot.classList.remove('hovering');
+                    ring.classList.remove('hovering');
+                }
+            });
+        }
+
+        // ========================================
+        // SCROLL PROGRESS BAR
+        // ========================================
+        var progressBar = document.getElementById('scrollProgress');
+
+        window.addEventListener('scroll', function() {
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var progress = (scrollTop / docHeight) * 100;
+            progressBar.style.width = progress + '%';
+        }, { passive: true });
+
+        // ========================================
+        // SCROLL REVEAL
+        // ========================================
+        var revealEls = document.querySelectorAll('.reveal');
+
+        var revealObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+
+        revealEls.forEach(function(el) { revealObs.observe(el); });
+
+        // ========================================
+        // ANIMATED COUNTERS
+        // ========================================
+        var counterEls = document.querySelectorAll('.metric-value[data-target]');
+        var countersRun = false;
+
+        var counterObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting && !countersRun) {
+                    countersRun = true;
+                    runCounters();
+                }
+            });
+        }, { threshold: 0.3 });
+
+        var metricsSection = document.querySelector('.hero-metrics');
+        if (metricsSection) counterObs.observe(metricsSection);
+
+        function runCounters() {
+            counterEls.forEach(function(el) {
+                var target = parseInt(el.getAttribute('data-target'));
+                var prefix = el.getAttribute('data-prefix') || '';
+                var suffix = el.getAttribute('data-suffix') || '';
+                var duration = 2200;
+                var startTime = null;
+
+                function tick(ts) {
+                    if (!startTime) startTime = ts;
+                    var p = Math.min((ts - startTime) / duration, 1);
+                    var eased = 1 - Math.pow(1 - p, 3);
+                    el.textContent = prefix + Math.floor(eased * target) + suffix;
+                    if (p < 1) requestAnimationFrame(tick);
+                    else el.textContent = prefix + target + suffix;
+                }
+                requestAnimationFrame(tick);
+            });
+        }
+
+        // ========================================
+        // NAVBAR SCROLL STATE
+        // ========================================
+        var nav = document.getElementById('nav');
+
+        window.addEventListener('scroll', function() {
+            if ((window.pageYOffset || document.documentElement.scrollTop) > 60) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        }, { passive: true });
+
+        // ========================================
+        // MOBILE MENU
+        // ========================================
+        var navToggle = document.getElementById('navToggle');
+        var navLinks = document.getElementById('navLinks');
+
+        navToggle.addEventListener('click', function() {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+
+        navLinks.querySelectorAll('a').forEach(function(a) {
+            a.addEventListener('click', function() {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ========================================
+        // FAQ ACCORDION
+        // ========================================
+        document.querySelectorAll('.faq-item').forEach(function(item) {
+            var q = item.querySelector('.faq-question');
+            q.addEventListener('click', function() {
+                var wasActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(function(i) {
+                    i.classList.remove('active');
+                    i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
+                if (!wasActive) {
+                    item.classList.add('active');
+                    q.setAttribute('aria-expanded', 'true');
+                }
+            });
+            q.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); q.click(); }
+            });
+        });
+
+        // ========================================
+        // SMOOTH SCROLL
+        // ========================================
+        document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+            a.addEventListener('click', function(e) {
+                var href = this.getAttribute('href');
+                if (href === '#') return;
+                var target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    var offset = nav.offsetHeight + 20;
+                    window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - offset, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ========================================
+        // ROI CALCULATOR
+        // ========================================
+        var rateSlider = document.getElementById('rateSlider');
+        var hoursSlider = document.getElementById('hoursSlider');
+        var rateDisplay = document.getElementById('rateDisplay');
+        var hoursDisplay = document.getElementById('hoursDisplay');
+        var monthlySaved = document.getElementById('monthlySaved');
+        var annualSaved = document.getElementById('annualSaved');
+        var roiMultiple = document.getElementById('roiMultiple');
+
+        function updateCalc() {
+            var rate = parseInt(rateSlider.value);
+            var hours = parseInt(hoursSlider.value);
+            var reclaimed = Math.round(hours * 0.65); // 65% reclaimed
+            var monthlyValue = reclaimed * rate * 4.33; // weeks per month
+            var annual = monthlyValue * 12;
+            var roi = monthlyValue / 977;
+
+            rateDisplay.textContent = '$' + rate;
+            hoursDisplay.textContent = hours;
+            monthlySaved.textContent = '$' + Math.round(monthlyValue).toLocaleString();
+            annualSaved.textContent = '$' + Math.round(annual).toLocaleString();
+            roiMultiple.textContent = roi.toFixed(1) + 'x';
+        }
+
+        rateSlider.addEventListener('input', updateCalc);
+        hoursSlider.addEventListener('input', updateCalc);
+        updateCalc();
+
+        // ========================================
+        // TESTIMONIAL CAROUSEL
+        // ========================================
+        var track = document.getElementById('carouselTrack');
+        var slides = track.querySelectorAll('.carousel-slide');
+        var dotsContainer = document.getElementById('carouselDots');
+        var currentSlide = 0;
+        var slideCount = slides.length;
+        var autoplayInterval;
+
+        // Create dots
+        for (var i = 0; i < slideCount; i++) {
+            var dot = document.createElement('button');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+            dot.dataset.index = i;
+            dot.addEventListener('click', function() {
+                goToSlide(parseInt(this.dataset.index));
+                resetAutoplay();
+            });
+            dotsContainer.appendChild(dot);
+        }
+
+        function goToSlide(n) {
+            currentSlide = n;
+            track.style.transform = 'translateX(-' + (n * 100) + '%)';
+            var dots = dotsContainer.querySelectorAll('.carousel-dot');
+            dots.forEach(function(d, idx) {
+                d.classList.toggle('active', idx === n);
+            });
+        }
+
+        function nextSlide() {
+            goToSlide((currentSlide + 1) % slideCount);
+        }
+
+        function resetAutoplay() {
+            clearInterval(autoplayInterval);
+            autoplayInterval = setInterval(nextSlide, 5000);
+        }
+
+        autoplayInterval = setInterval(nextSlide, 5000);
+
+        // ========================================
+        // MAGNETIC BUTTONS
+        // ========================================
+        if (window.matchMedia('(pointer: fine)').matches) {
+            document.querySelectorAll('.magnetic').forEach(function(btn) {
+                btn.addEventListener('mousemove', function(e) {
+                    var rect = btn.getBoundingClientRect();
+                    var x = e.clientX - rect.left - rect.width / 2;
+                    var y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = 'translate(' + (x * 0.15) + 'px, ' + (y * 0.15) + 'px)';
+                });
+
+                btn.addEventListener('mouseleave', function() {
+                    btn.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+
+        // ========================================
+        // NOTIFICATION TOASTS
+        // ========================================
+        var toastMessages = [
+            { text: '<strong>Kairos</strong> reorganized tomorrow\'s calendar &mdash; 2 hours of deep work protected' },
+            { text: '<strong>47 emails triaged</strong> &mdash; 3 flagged for your review' },
+            { text: '<strong>Midas</strong> delivered meeting prep for Goldman Sachs call' },
+            { text: '<strong>Atlas</strong> sent follow-up to Sarah Chen &mdash; investor intro acknowledged' },
+            { text: '<strong>Travel itinerary</strong> for NYC trip finalized and confirmed' },
+            { text: '<strong>Competitive analysis</strong> on Apex Corp completed &mdash; briefing ready' }
+        ];
+
+        var toastIndex = 0;
+        var toastContainer = document.getElementById('toastContainer');
+
+        function showToast() {
+            var msg = toastMessages[toastIndex % toastMessages.length];
+            var toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = '<div class="toast-icon"></div><div class="toast-text">' + msg.text + '</div>';
+            toastContainer.appendChild(toast);
+            toastIndex++;
+
+            setTimeout(function() {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 5800);
+        }
+
+        // First toast after 6s, then every 10s
+        setTimeout(function() {
+            showToast();
+            setInterval(showToast, 10000);
+        }, 6000);
+
+    })();
+    </script>
 </body>
 </html>
